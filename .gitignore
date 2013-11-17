@@ -1,5 +1,2 @@
-/application/configs/application.ini
 /application/configs/db.ini
-/library/ZFDebug/Controller/Plugin/Debug.php
-/comulien.xml
 application.log
