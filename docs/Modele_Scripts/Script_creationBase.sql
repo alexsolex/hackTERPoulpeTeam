@@ -1,4 +1,3 @@
-DROP DATABASE IF EXISTS pauseter;
 
 CREATE DATABASE IF NOT EXISTS pauseter;
 USE pauseter;
