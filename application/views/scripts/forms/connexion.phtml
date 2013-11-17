@@ -1,0 +1,8 @@
+
+    <form enctype="application/x-www-form-urlencoded"
+          action="<?php echo $this->escape($this->element->getAction()); ?>" 
+          method="<?php echo $this->escape($this->element->getMethod()); ?>">
+        <?php echo $this->element->login->renderViewHelper(); ?>
+        <?php echo $this->element->password->renderViewHelper(); ?>
+        <input data-theme="c" data-ajax="false" type="submit" name="submit" id="submit" value="Connexion" >
+    </form>

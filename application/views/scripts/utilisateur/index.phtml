@@ -1,0 +1,62 @@
+<?php $comulienNamespace = new Zend_Session_Namespace('bulle');?>
+<div data-role="content" id="content">
+    <div class="contentPrincipal">
+<!--Entête du profil (Pseudo, nom, avatar)-->
+
+<div  id="entete">
+    <div id="triConteneur" class="ui-grid-a">
+              <div class="ui-block-a" >
+                   <div class="avatarProfil">
+                        <img src="<?php echo $this->escape($this->utilisateur->getGravatar()) ?>" alt="" />
+                    </div>
+              </div>
+                <div class="ui-block-b" >
+                    <div id="nomProfil">
+                        <div id="name"><?php echo $this->escape($this->utilisateur->prenomUser) . ' ' . $this->escape($this->utilisateur->nomUser) ?>
+                        </div>
+                        <br>
+                        <div id="pseudo"><?php echo $this->escape($this->utilisateur->loginUser) ?></div>
+                    </div>
+                </div>       
+    </div>
+    <hr>  
+</div>
+
+   <!--Panneau de bienvenue-->
+    <div class="panneau" data-corners="true">
+        <?php   
+        if (isset($comulienNamespace->checkedInEvent))
+        { ?> 
+        <div id="bienvenue"><p>Bienvenue, dans l'événement '<span class="bleu"><?php echo $this->escape($this->evenement->titreEvent) ?></span>'<p>
+         </div>       
+        <div><p>Dans cet événément, vous êtes <b><?php echo $this->escape($this->role) ?></b> <?php echo ($this->moderateur)?'avec':'sans'; ?> pouvoir de modération.</p></div>
+         <?php }
+       else{
+?>
+        
+       <?php }?>
+    </div>
+    <!--Menu du profil-->
+    <ul data-role="listview" data-inset="true" id="liste" data-theme="c" >
+    <li><a href="<?php echo $this->baseUrl() . '/utilisateur/modifier' ?>">Editer mes informations</a></li>
+    <li><a data-ajax="false" href="<?php echo $this->baseUrl() . '/utilisateur/profilpublic/id/'. $this->utilisateur->idUser ?>">Voir mon profil public</a></li>
+    <li><a href="<?php echo $this->baseUrl() . '/utilisateur/profilprive' ?>">Voir mon profil complet</a></li>
+    <li data-theme="d"><a  href="<?php echo $this->baseUrl() . '/utilisateur/deconnecter' ?>" >Me déconnecter</a></li>
+    <!--Test si l'utilisateur est dans une bulle-->
+<?php   
+        if (isset($comulienNamespace->checkedInEvent))
+        { ?>  
+             <li data-theme="e"><a href="<?php echo $this->baseUrl() . '/message/lister-tous' ?>" data-ajax='false' alt="Retour à la bulle">Accès à la bulle</a>
+    </li>
+       <?php }
+       
+?>
+    </ul>
+<br/>
+</div>
+    </div>
+<!--Pied de page-->
+<div data-role="footer" data-position="fixed">
+         <img  src="<?php  echo $this->baseUrl() ?> /jqueryMobile/images/logo_comulien.png" alt="logo organisme" /> 
+</div>
+    

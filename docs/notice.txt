@@ -1,0 +1,7 @@
+Pause TER
+Le service de micro-occupation des voyageurs TER, sponsorisés par les partenaires en gare.
+
+OpenData
+    - Wikipedia
+    - Horaires de départ des trains
+    - ...
