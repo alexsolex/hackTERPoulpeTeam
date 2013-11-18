@@ -24,7 +24,8 @@ $application = new Zend_Application(
     array(
             'config' => array(
                 APPLICATION_PATH . '/configs/application.ini',
-                APPLICATION_PATH . '/configs/db.ini'
+                APPLICATION_PATH . '/configs/db.ini',
+                APPLICATION_PATH . '/configs/social.ini'
                 
             )
         )
