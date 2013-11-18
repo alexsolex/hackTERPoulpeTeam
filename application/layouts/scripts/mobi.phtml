@@ -1,31 +1,114 @@
 <!-- application/layouts/scripts/layout.phtml -->
 <?php echo $this->doctype() ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-      <meta name="google-site-verification" content="3D2E7aCcDxWePf-OwzfzzmQRqP0GxnSejBvjxjd5Dlw" />
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <head>
+        <meta name="google-site-verification" content="3D2E7aCcDxWePf-OwzfzzmQRqP0GxnSejBvjxjd5Dlw" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <!-- Bootstrap core CSS -->
+        <link href="../assets/css/bootstrap.css" rel="stylesheet"/>
+
+        <!-- Custom styles for this template -->
+        <link href="../assets/css/override.css" rel="stylesheet"/>
         <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
-      <title>Pause'TER</title>
-      <script type="text/javascript">
-          var BASE_URL = '<?php echo $this->baseUrl(); ?>';
-      </script>
-      
- </head>
+        <title>Pause'TER</title>
+        <script type="text/javascript">
+            var BASE_URL = '<?php echo $this->baseUrl(); ?>';
+        </script>
+
+    </head>
     <body>
-        
-        
-        Layout default (appli mobile)
-        <?php echo $this->layout()->content ?>
-<!--        <div>
-            ces liesn pour se connecter sur les réseaux sociaux
-            <p><a href="<?php // echo TBS_Auth_Adapter_Google::getAuthorizationUrl(); ?>" data-ajax="false">Google</a></p>
-            <p><a href="<?php // echo TBS_Auth_Adapter_Twitter::getAuthorizationUrl();  ?>" data-ajax="false"> Twitter</a></p>
-            <p><a href="<?php // echo TBS_Auth_Adapter_Facebook::getAuthorizationUrl(); ?>" data-ajax="false">Facebook</a></p>
-    </div>-->
-    
+
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#">Brand</a>
+                        </div>
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav">
+                                <li class="active">
+                                    <a href="#">Link</a>
+                                </li>
+                                <li>
+                                    <a href="#">Link</a>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong class="caret"></strong></a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="#">Action</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Another action</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Something else here</a>
+                                        </li>
+                                        <li class="divider">
+                                        </li>
+                                        <li>
+                                            <a href="#">Separated link</a>
+                                        </li>
+                                        <li class="divider">
+                                        </li>
+                                        <li>
+                                            <a href="#">One more separated link</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <form class="navbar-form navbar-left" role="search">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" />
+                                </div><button type="submit" class="btn btn-default">Submit</button>
+                            </form>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <a href="#">Link</a>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong class="caret"></strong></a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="#">Action</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Another action</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Something else here</a>
+                                        </li>
+                                        <li class="divider">
+                                        </li>
+                                        <li>
+                                            <a href="#">Separated link</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+
+            Layout default (appli mobile)
+            <?php echo $this->layout()->content ?>
+        </div>
+        <!--        <div>
+                    ces liesn pour se connecter sur les réseaux sociaux
+                    <p><a href="<?php // echo TBS_Auth_Adapter_Google::getAuthorizationUrl();    ?>" data-ajax="false">Google</a></p>
+                    <p><a href="<?php // echo TBS_Auth_Adapter_Twitter::getAuthorizationUrl();     ?>" data-ajax="false"> Twitter</a></p>
+                    <p><a href="<?php // echo TBS_Auth_Adapter_Facebook::getAuthorizationUrl();    ?>" data-ajax="false">Facebook</a></p>
+            </div>-->
+
+    <!-- Bootstrap core JavaScript ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
     </body>
 </html>
