@@ -1,5 +1,3 @@
-
-
 <?php
 
 class ParticipantController extends Zend_Controller_Action
@@ -23,6 +21,4 @@ class ParticipantController extends Zend_Controller_Action
     }
 
 }
-
-
 
