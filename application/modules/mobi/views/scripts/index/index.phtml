@@ -1,14 +1,13 @@
-
 <div class="row clearfix">
     <div class="col-md-12 column">
         <div class="jumbotron">
             <div class="row clearfix">
                 <div class="col-md-3 column quiz-logo">
-                    <img src="../assets/img/partenaires/Starbucks.png" class="img-responsive center-block">
+                    <img src="<?php echo $this->baseUrl() ?>/assets/img/partenaires/Starbucks.png" class="img-responsive center-block">
                 </div>
                 <div class="col-md-9 column">
                     <p>
-                        Quelle est la température actuelle à Valencienne?
+                        <?php echo $this->question['question']; ?>
                     </p>
                 </div>
             </div>
@@ -18,16 +17,16 @@
 
             <div class="row clearfix">
                 <div class="col-md-3 column reponse">
-                    <button type="button" class="btn btn-block">18°C</button>
+                    <button type="button" class="btn btn-block"><?php echo $this->question['choix1']; ?></button>
                 </div>
                 <div class="col-md-3 column reponse">
-                    <button type="button" class="btn btn-block">21°C</button>
+                    <button type="button" class="btn btn-block"><?php echo $this->question['choix2']; ?></button>
                 </div>
                 <div class="col-md-3 column reponse">
-                    <button type="button" class="btn btn-block">12°C</button>
+                    <button type="button" class="btn btn-block"><?php echo $this->question['choix3']; ?></button>
                 </div>
                 <div class="col-md-3 column reponse">
-                    <button type="button" class="btn btn-block">0°C</button>
+                    <button type="button" class="btn btn-block"><?php echo $this->question['choix4']; ?></button>
                 </div>
             </div>
 
