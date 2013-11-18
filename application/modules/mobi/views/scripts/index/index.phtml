@@ -1,1 +1,16 @@
-<?php echo $this->info; ?>
+<h1>Question</h1>
+<p><?php echo $this->question['question']; ?></p>
+<h1>Propositions</h1>
+<ol>
+    <li><?php echo $this->question['choix1']; ?></li>
+    <li><?php echo $this->question['choix2']; ?></li>
+    <li><?php echo $this->question['choix3']; ?></li>
+    <li><?php echo $this->question['choix4']; ?></li>
+    
+</ol>
+<h1>Sponsor</h1>
+<p><?php echo $this->sponsor['nom']; ?></p>
+<p><?php echo $this->sponsor['FB']; ?></p>
+<p><?php echo $this->sponsor['twitter']; ?></p>
+<p><?php echo $this->sponsor['google']; ?></p>
+<p><?php echo $this->sponsor['url']; ?></p>
