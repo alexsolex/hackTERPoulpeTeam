@@ -1,0 +1,31 @@
+<!-- application/layouts/scripts/layout.phtml -->
+<?php echo $this->doctype() ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+      <meta name="google-site-verification" content="3D2E7aCcDxWePf-OwzfzzmQRqP0GxnSejBvjxjd5Dlw" />
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+      <title>Pause'TER</title>
+      <script type="text/javascript">
+          var BASE_URL = '<?php echo $this->baseUrl(); ?>';
+      </script>
+      
+ </head>
+    <body>
+        
+        
+        Layout default (appli mobile)
+        <?php echo $this->layout()->content ?>
+<!--        <div>
+            ces liesn pour se connecter sur les réseaux sociaux
+            <p><a href="<?php // echo TBS_Auth_Adapter_Google::getAuthorizationUrl(); ?>" data-ajax="false">Google</a></p>
+            <p><a href="<?php // echo TBS_Auth_Adapter_Twitter::getAuthorizationUrl();  ?>" data-ajax="false"> Twitter</a></p>
+            <p><a href="<?php // echo TBS_Auth_Adapter_Facebook::getAuthorizationUrl(); ?>" data-ajax="false">Facebook</a></p>
+    </div>-->
+    
+    </body>
+</html>
