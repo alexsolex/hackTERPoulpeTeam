@@ -61,7 +61,7 @@ class Mobi_UserController extends Zend_Controller_Action
                 $auth->clearIdentity($this->_getParam('provider'));
                 throw new Exception('Error!!');
             } else {
-                $this->_redirect('/user/connect');
+                $this->_redirect('/mobi/user/connect');
             }
         } else { // Normal login page
             $this->view->googleAuthUrl = TBS_Auth_Adapter_Google::getAuthorizationUrl();
