@@ -50,6 +50,18 @@ body {
     background-color: rgba(0, 0, 0, 0.7);
     height: 100%;
 }
+/* jumbotron */
+.jumbotron {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    padding: 20px;
+}
+
+/* boutons */
+.btn {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
 /* navbar */
 
 .nav {
