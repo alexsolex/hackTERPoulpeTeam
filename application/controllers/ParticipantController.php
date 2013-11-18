@@ -18,7 +18,8 @@ class ParticipantController extends Zend_Controller_Action
      */
     public function indexAction()
     {
-      
+      $participants = new Application_Model_DbTable_Participant();
+      $this->view->entries = $participants->fetchAll();
     }
 
 }

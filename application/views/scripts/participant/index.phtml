@@ -1,1 +1,7 @@
 <p>Super les participants</p>
+<dl>
+    <?php foreach ($this->entries as $entry): ?>
+    <dt><?php echo $this->escape($entry->nom) ?></dt>
+    <dd><?php echo $this->escape($entry->prenom) ?></dd>
+    <?php endforeach ?>
+</dl>
