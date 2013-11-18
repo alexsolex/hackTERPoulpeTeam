@@ -1,0 +1,80 @@
+@import url(http://fonts.googleapis.com/css?family=Ruluko);
+
+/* general */
+
+*, h1, h2, h3, h4, h5, h6  {
+    font-family: 'Ruluko', sans-serif;
+}
+h2 {
+    border-left: 5px solid #e3001b;
+    padding-left: 10px;
+    color: white;
+}
+
+hr {
+    border-top: 1px gray dotted;
+}
+
+.container {
+    background-color: rgba(39, 43, 48, 0.5);
+}
+body {
+    /*background-image: url("../img/background.png")*/
+}
+/* navbar */
+
+.nav {
+    color: black;
+    text-shadow: none ;
+}
+
+.navbar {
+    border: 0px solid white;
+}
+.navbar-inner {
+    background: none !important; 
+    border: 0 !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+}
+
+.nav .active > a {
+    background: #e3001b !important; 
+    color: white !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+}
+
+.nav > li > a {
+    color: black !important;
+    text-shadow: none !important;
+}
+
+.nav > li > a:hover {
+    color: white !important;
+    background-image: none !important;
+    background-color: red !important;
+}
+.nav > li {
+    border: 0px solid white;
+}
+
+/* page principale */
+
+/* footer */
+#footer{
+    border-top: 1px dotted gray;
+    padding : 20px;
+    margin-top: 20px;
+    
+}
+
+#footer h2 {
+    border-style: none;
+    border-bottom : 1px dotted gray;
+    font-size: medium;
+    padding: 0px;
+    margin:0px;
+    margin-bottom : 10px;
+    padding-bottom: 10px;
+}
