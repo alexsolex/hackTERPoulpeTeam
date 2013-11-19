@@ -13,12 +13,15 @@
       <script type="text/javascript">
           var BASE_URL = '<?php echo $this->baseUrl(); ?>';
       </script>
-      
+      <link href="<?php echo $this->baseUrl() . '/assets/css/' ?>datatable-pauseter.css" rel="stylesheet" type="text/css" >
+      <script src="<?php echo $this->baseUrl() . '/assets/js/' ?>jquery.js"></script>
+      <script src="<?php echo $this->baseUrl() . '/assets/js/' ?>jquery.dataTables.min.js"></script>
+      <script src="<?php echo $this->baseUrl() . '/assets/js/' ?>jquery-ui-1.10.3.custom.min.js"></script>
+      <script src="<?php echo $this->baseUrl() . '/assets/js/' ?>ecran.js"></script>
  </head>
     <body>
         
         
-        Layout default (appli mobile) test Laurent
         <?php echo $this->layout()->content ?>
 <!--        <div>
             ces liesn pour se connecter sur les réseaux sociaux

@@ -2,19 +2,19 @@
 
 <?php
  
-require_once('Zend/Soap/Client.php');
+
 class EcrangareController extends Zend_Controller_Action
 {
-    private $_ecran = null;
     private $soapClient;
+    
     public function init()
     {        
-        $array = array('login'=> base64_encode('opendata'),'password'=> base64_encode('opendata'));
-        $endpoint = 'http://5.39.25.113:9000/sum-server/services/navitiaV3?WSDL';
+        //Création de l'appel au webservice avec soap
         try{
+            $endpoint = 'http://gares-en-mouvement.com/tvs/TVS?wsdl';
             $this->soapClient = new Zend_Soap_Client();
             $this->soapClient->setWsdl($endpoint);
-            $this->soapClient->setOptions($array);
+            $this->soapClient->setSoapVersion(SOAP_1_1);
             
         } catch (Exception $ex) {
                 echo $ex->getMessage();
@@ -36,14 +36,70 @@ class EcrangareController extends Zend_Controller_Action
      */
     public function indexAction()
     {   
+        //Codé en dur
+        //Il faut voir si on veut avoir du dynamisme ici
+        //Si on a le temps sinon ça me semble pas super important
+        //Un message et c'est tout
         try{
-           $result = $this->soapClient->getWsdl();
-            $this->view->reponse = $result;    
+           $result = $this->soapClient->getTableauInfos('LEW','1','20131119T00:00:00.000'); 
+            $this->view->info = $result->page;
         } catch (SoapFault $ex) {
 
                 echo $ex->getMessage();
         }
   
+    }
+    
+    public function departs(){
+        try{
+           $result = $this->soapClient->getTableauTrainsDepart('LEW');
+           //$result est le retour de l'appel au webservice
+           //Dois retourner
+           //Pour les champs non renseignés => ""
+                        //{
+                        //  "aaData": [
+                        //    [
+                        //      "logo",
+                        //      "transporteur",
+                        //      "numéro de train",
+                        //      "heure depart",
+                        //      "destination",
+                        //      "information",
+                        //      "voie"
+                        //    ],
+                        //    [
+                        //       "logo",
+                        //      "transporteur",
+                        //      "numéro de train",
+                        //      "heure depart",
+                        //      "destination",
+                        //      "information",
+                        //      "voie"
+                        //    ],
+                        //    [
+                        //       "logo",
+                        //      "transporteur",
+                        //      "numéro de train",
+                        //      "heure depart",
+                        //      "destination",
+                        //      "information",
+                        //      "voie"
+                        //    ]
+                        //      
+                        //}
+        } catch (SoapFault $ex) {
+                echo $ex->getMessage();
+        }
+    }
+    
+    public function arrivees(){
+        try{
+           $result = $this->soapClient->getTableauTrainsArrivee('LEW');
+           //$result est le retour de l'appel au webservice
+           //Idem que pour les departs
+        } catch (SoapFault $ex) {
+                echo $ex->getMessage();
+        }
     }
 }
 
