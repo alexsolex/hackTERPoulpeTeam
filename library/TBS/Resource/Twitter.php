@@ -13,7 +13,7 @@ class TBS_Resource_Twitter
 	}
 
 	public function getStatus() {
-	    $endpoint = 'http://api.twitter.com/1/statuses/user_timeline.json';
+	    $endpoint = 'http://api.twitter.com/1.1/statuses/user_timeline.json';
 		return json_decode($this->_getData('status', $endpoint));
 	}
 
@@ -23,7 +23,7 @@ class TBS_Resource_Twitter
 	}
 
 	public function getProfile() {
-	    $endpoint = 'http://api.twitter.com/1/users/show.json';
+	    $endpoint = 'http://api.twitter.com/1.1/users/show.json';
 		return (array)json_decode($this->_getData('profile', $endpoint));
 	}
 	
@@ -35,10 +35,11 @@ class TBS_Resource_Twitter
 	protected function _getData($label, $url)
 	{
 	    if (!$this->_hasData($label)) {
-    	    $client = $this->_accessToken->getHttpClient($this->_options);
-    	    $client->setUri($url);
-    	    $client->setParameterGet('user_id', $this->_accessToken->user_id);
-    	    $this->_setData($label, $client->request()->getBody());
+                $client = $this->_accessToken->getHttpClient($this->_options);
+                $client->setUri($url);
+                $client->setMethod(Zend_Http_Client::GET);
+                $client->setParameterGet('user_id', $this->_accessToken->user_id);
+                $this->_setData($label, $client->request()->getBody());
 	    }
 	    return $this->data[$label];
 	}
