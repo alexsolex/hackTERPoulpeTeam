@@ -20,7 +20,13 @@ class EcrangareController extends Zend_Controller_Action
                 echo $ex->getMessage();
         }
        
+        //Context : on le force en json
+        //$this->_request->setParam('format', 'json');
         
+        $contextSwitch = $this->_helper->contextSwitch();
+        $contextSwitch->addActionContext('index', 'json')
+                      
+                      ->initContext();
     }
 
     /**

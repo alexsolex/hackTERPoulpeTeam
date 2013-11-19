@@ -1,14 +1,17 @@
 <?php
 
-class Mobi_IndexController extends Zend_Controller_Action {
+class Mobi_QuestionController extends Zend_Controller_Action {
 
     public function init() {
         //Context : on le force en json
-        $this->_request->setParam('format', 'json');
+        //$this->_request->setParam('format', 'json');
         
         $contextSwitch = $this->_helper->contextSwitch();
         $contextSwitch->addActionContext('index', 'json')
                       ->addActionContext('error','json')
+                      ->addActionContext('repondre','json')
+                      ->addActionContext('obtenir','json')
+                      
                       ->initContext();
     }
 
@@ -22,7 +25,50 @@ class Mobi_IndexController extends Zend_Controller_Action {
         $this->view->sponsor = $leSponsor[1];
         
     }
+    
+    /*
+     * Retourne la Question, le sponsor, les propositions
+     */
+    public function obtenirAction() {
+        // récupère la gare de l'utilisateur
+        $idGare = $this->getIdGare();
+        // récupère la question en cours
+        $question =  $this->getQuestion($idGare);
+        
+        //la question et propositions
+        $arrayQuestion = $question[1];
+        
+        //idQuestion
+        $idQuestion = $question[0];
+        
+        $this->view->question = $arrayQuestion;
+        $leSponsor = $this->getSponsor($idQuestion);
+        $this->view->sponsor = $leSponsor[1];
+        
+    }
+    
+    public function repondreAction() {
+        $bienRepondu = false;
+        //récupérer les params :
+        //  - l'ID question
+        //  - le num réponse
+        $laReponse = $this->_request->getParam('reponse',"");
+        
+        if ($laReponse == getSolution()) {
+            $bienRepondu = true;
+        }
+        $this->view->victoire = $victoire;
+        $this->view->solution = getSolution();
+        
+        
+        
+    }
 
+    
+    
+    public static function getSolution() {
+        return "Orchies";
+    }
     
     public static function getQuestion($idGare) {
         //TODO $idGare;
