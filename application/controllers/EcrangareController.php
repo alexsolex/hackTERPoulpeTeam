@@ -1,5 +1,3 @@
-
-
 <?php
  
 
@@ -25,7 +23,7 @@ class EcrangareController extends Zend_Controller_Action
         
         $contextSwitch = $this->_helper->contextSwitch();
         $contextSwitch->addActionContext('index', 'json')
-                      
+                      ->addActionContext('departs', 'json')
                       ->initContext();
     }
 
@@ -50,9 +48,43 @@ class EcrangareController extends Zend_Controller_Action
   
     }
     
-    public function departs(){
+    public function departsAction() {
+        $soapResults = $this->departs('LEW');
+        $retour = array();
+        foreach ($soapResults->train as $train) {
+            $retour[] = array(
+                $train->picto, //"logo",
+                $train->type,//      "transporteur",
+                $train->num, //      "numéro de train",
+                $train->heure,//      "heure depart",
+                $train->origdest,//      "destination",
+                $train->trainTypeChoice,//      "information",
+                $train->voie//      "voie"
+                );
+        }
+                    
+//                "attribut_voie": "",
+//                "heure": "2013-11-19T17:35:00.000Z",
+//                "ligne": 1,
+//                "num": "9153",
+//                "origdest": "ST PANCRAS",
+//                "picto": "31",
+//                "trainTypeChoice": {
+//                    "etat": "",
+//                    "retard": "",
+//                    "valid": false
+//                },
+//                "type": "EUROSTAR",
+//                "valid": false,
+//                "voie": "4"
+        
+        $this->view->aaData = $retour;
+    }
+    
+    public function departs($codeGare){
         try{
-           $result = $this->soapClient->getTableauTrainsDepart('LEW');
+            
+           $result = $this->soapClient->getTableauTrainsDepart($codeGare);
            //$result est le retour de l'appel au webservice
            //Dois retourner
            //Pour les champs non renseignés => ""
@@ -90,6 +122,8 @@ class EcrangareController extends Zend_Controller_Action
         } catch (SoapFault $ex) {
                 echo $ex->getMessage();
         }
+        return $result;
+           
     }
     
     public function arrivees(){
