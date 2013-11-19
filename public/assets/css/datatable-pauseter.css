@@ -8,14 +8,16 @@
 }
 .datatable-pauseter tbody td{
     /*font-weight: bold;*/
-    padding-top: 2px;
-   padding-bottom: 2px;
+    padding-top: 5px;
+   padding-bottom: 5px;
     color:white;
      text-align: center;
 }
-/*.col-jaune{
-    color:gold !Important;
-}*/
+.datatable-pauseter tbody td img{
+    width: 37px;
+        height: 20px;
+}
+
 .datatable-pauseter tbody tr td:nth-child(4){
     color:gold !Important;
 }
@@ -29,7 +31,7 @@ margin-right: 10px;
 body{
     margin:0px !Important;
     margin-right: 10px;
-    font-size: 1.5em;
+    font-size: 1em;
     font-family: Verdana, Geneva, sans-serif;
 }
 .datatable-pauseter tr.odd{background-color: #084b96}
@@ -51,7 +53,7 @@ body{
 }
 
 /*CSS POUR LE BLOCK QUESTION*/
-#question-pauseter{
+#dialog-question{
     position: absolute;
     height:450px;
     top: 150px;
@@ -61,4 +63,7 @@ body{
     width: 90%;
     z-index: 999;
     background-color: #fff884;
+}
+#datatable-horaire_processing{
+    height: 0px !Important;
 }

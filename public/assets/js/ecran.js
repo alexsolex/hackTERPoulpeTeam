@@ -28,7 +28,22 @@ function rafraichir(){
     }, 60000);
 }
 
-
+// callback function to bring a hidden box back
+//    function callback() {
+//      setTimeout(function() {
+//        $( "#dialog-question" ).removeAttr( "style" ).hide().fadeIn();
+//        callend();
+//      }, 6000 );
+//    };
+//    
+//    function callend() {
+//      setTimeout(function() {
+//        $( "#dialog-question" ).effect( "puff" );
+//      }, 3000 );
+//      setTimeout(function() {
+//        callback();
+//      }, 3000 );
+//    };
 /////////////////////////////////////////////////////////////////////
 //Début
 /////////////////////////////////////////////////////////////////////
@@ -36,48 +51,30 @@ $(document).ready(function(){
    
     //Configuration de la datatable
     oTableHoraire = $('#datatable-horaire').dataTable({
-//            "bProcessing": true,
-//            "bServerSide": true,
-//            "bStateSave": true,
-//            "sAjaxSource": "",
-////            "sServerMethod": "POST",
-//
-//            // Paramètres supplémentaires : filtres
-//            "fnServerParams": function (aoData) {
-//
-//            },
-//            "aaData":[
-//                ['2322', 'TGV', '96584', '10h35', 'Lille Europe', 'Retard 4min', '4'],
-//                ['2322', 'TGV', '96584', '10h35', 'Lille Europe', 'Retard 4min', '4']
-//        
-//            ],
-//            // Demande les données au serveur
-////            "fnServerData": function (sSource, aoData, fnCallback) {
-////
-////                // Convertit le tableau aoData en json interprétable par le deserializer C#
-////                var s = '{ p: {';
-////                for (var i = 0; i < aoData.length; i++) {
-////
-////                    var o = aoData[i];
-////                    if (i > 0) s += ',';
-////                    s += $.format('"{0}" : "{1}"', o.name, o.value);
-////                }
-////                s += '}}';
-////
-////                $.ajax({
-////                    "dataType": 'json',
-////                    "contentType": "application/json; charset=utf-8",
-////                    "type": "POST",
-////                    "url": sSource,
-////                    "data": s,
-////                    "success": function (data) {
-////                        var json = $.parseJSON(data.d);
-////                        fnCallback(json);
-////                    }
-////                });
-////                
-////            },
-//
+            "bProcessing": true,
+            "bServerSide": true,
+            "bStateSave": true,
+            "sAjaxSource": "http://localhost/hackTERPoulpeTeam/public/ecrangare/departs?format=json",
+            "sServerMethod": "POST",
+
+         
+             //Demande les données au serveur
+            "fnServerData": function (sSource, aoData, fnCallback) {
+     
+                $.ajax({
+                    "dataType": 'json',
+                    "contentType": "application/json; charset=utf-8",
+                    "type": "POST",
+                    "url": sSource,
+                    "data": aoData,
+                    "success": function (data) {
+//                        var json = $.parseJSON(data.d);
+                        fnCallback(data);
+                    }
+                });
+                
+            },
+
             // Pas de filtre
             "bFilter": false,
 
@@ -85,19 +82,20 @@ $(document).ready(function(){
             "bPaginate": false,
             "sPaginationType": false,
 
-//            // Internationalisation
-//            "oLanguage": {
-//                "sProcessing": "Rafraichissement en cours...",
-//                "sEmptyTable": "Aucun horaire",
-//                "sInfo": "",
-//                "sInfoFiltered": "",
-//                "sInfoEmpty": "",
-//                "sZeroRecords": "Aucun horaire",
-//                "sLengthMenu": '',
-//                "sSearch": "Filtre : "
-//
-//            },
+            // Internationalisation
+            "oLanguage": {
+                "sProcessing": "Rafraichissement en cours...",
+                "sEmptyTable": "Aucun horaire",
+                "sInfo": "",
+                "sInfoFiltered": "",
+                "sInfoEmpty": "",
+                "sZeroRecords": "Aucun horaire",
+                "sLengthMenu": ''
+                
 
+            },
+
+           
             // Définition des colonnes
             "aoColumnDefs": [
                 { "sWidth": "50px", "sClass": "col-id", "aTargets": [0] },
@@ -111,6 +109,9 @@ $(document).ready(function(){
     
     //Lance le rafraichissement de la datatable (Toutes les minutes)
     rafraichir();
+//    callback();
+    
+     
 });
 
 
