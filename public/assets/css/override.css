@@ -4,32 +4,11 @@
 html { 
     margin:0;
     padding:0;
-    background: url(../img/backgrounds/5.jpg) no-repeat center fixed; 
+    background: url(../img/backgrounds/3.jpg) no-repeat center fixed; 
     -webkit-background-size: cover; /* pour Chrome et Safari */
     -moz-background-size: cover; /* pour Firefox */
     -o-background-size: cover; /* pour Opera */
     background-size: cover; /* version standardisée */
-}
-
-html, body {
-    height: 100%;
-}
-.container-fluid {
-    margin: 0 auto;
-    height: 100%;
-    padding: 20px 0;
-
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-.columns {
-    height: 100%;   
-}
-
-.content-area, .article-tree{
-    height: 100%;
 }
 
 *, h1, h2, h3, h4, h5, h6  {
@@ -46,14 +25,11 @@ hr {
 }
 body {
     background: none;
-    padding-top: 100px;
-    background-color: rgba(255, 255, 255, 0.7);
-    height: 100%;
+    padding-top: 20px;
 }
 /* jumbotron */
 .jumbotron {
-    background-color: rgba(255, 255, 255, 0.5);
-    border: none;
+    background-color: rgba(255, 255, 255, 0.8);
     padding: 20px;
     text-align: center;
 }
@@ -71,6 +47,11 @@ body {
 }
 
 /* navbar */
+
+.navbar{
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+}
 
 /*.nav {
     color: black;
