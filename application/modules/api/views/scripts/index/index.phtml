@@ -1,0 +1,42 @@
+
+<div class="row clearfix">
+    <div class="col-md-12 column">
+        <div class="jumbotron"><div class="row clearfix">
+                <div class="col-md-12 column">
+                    <img src="<?php echo $this->baseUrl() ?>/assets/img/pauseTER/logo.png" class="img-responsive center-block">
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-md-3 column quiz-logo">
+                    <img src="<?php echo $this->baseUrl() ?>/assets/img/partenaires/Starbucks.png" class="img-responsive center-block">
+                </div>
+                <div class="col-md-9 column">
+                    <p>
+                        <?php echo $this->question['question']; ?>
+                    </p>
+                </div>
+            </div>
+            <p>
+                <?php /* echo $this->info; */ ?>
+            </p>
+
+            <div class="row clearfix">
+                <div class="col-md-3 column reponse">
+                    <button type="button" class="btn btn-block"><?php echo $this->question['choix1']; ?></button>
+                </div>
+                <div class="col-md-3 column reponse">
+                    <button type="button" class="btn btn-block"><?php echo $this->question['choix2']; ?></button>
+                </div>
+                <div class="col-md-3 column reponse">
+                    <button type="button" class="btn btn-block"><?php echo $this->question['choix3']; ?></button>
+                </div>
+                <div class="col-md-3 column reponse">
+                    <button type="button" class="btn btn-block"><?php echo $this->question['choix4']; ?></button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
