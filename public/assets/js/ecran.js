@@ -32,8 +32,8 @@ function rafraichir(){
           $.ajax({
              "dataType":"json",
              "contentType":"application/json; charset=utf-8",
-             "type":"POST",
-             "url": BASE_URL + "/api/question/obtenir/TVS=LEW",
+             "type":"GET",
+             "url": BASE_URL + "/api/question/obtenir/TVS/LEW",
              "success": function(data){
                  $('#textQuestion').text(data['question']['question']);
                  $('#logo').attr('src', BASE_URL + '/assets/img/partenaires/' + data['sponsor']['logo']);

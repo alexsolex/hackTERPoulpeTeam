@@ -32,20 +32,27 @@ class Api_QuestionController extends Zend_Controller_Action {
     public function obtenirAction() {
         // récupère la gare de l'utilisateur
         //$idGare = $this->getIdGare();
-        $idGare = $this->_request->getParam('idGare');
-        // récupère la question en cours
-        $question =  $this->getQuestion($idGare);
+        $tvs = $this->_request->getParam('TVS');
         
-        //la question et propositions
-        $arrayQuestion = $question[1];
+        $tableQuizz = new Application_Model_DbTable_Quizz();
+        $quizzRowset = $tableQuizz->getQuizz($tvs);
+        if ($quizzRowset->count()<1) {
+            $this->_response->setHttpResponseCode (400);
+            return;
+        }
+        $leQuizz = $quizzRowset->current();
+        $this->view->quizz = $leQuizz->toArray();
+
+        // récupère la question en cours
+        $question =  $this->getQuestion($leQuizz);
         
         //idQuestion
-        $idQuestion = $question[0];
+        $idQuestion = $leQuizz->idQuestion;
         
-        $this->view->question = $arrayQuestion;
-        $leSponsor = $this->getSponsor($idQuestion);
-        $this->view->sponsor = $leSponsor[1];
-        $this->view->idGare = $idGare;
+        $this->view->question = $question;
+        $leSponsor = $this->getSponsor($leQuizz);
+        $this->view->sponsor = $leSponsor;
+        $this->view->tvs = $tvs;
         
     }
     
@@ -72,33 +79,31 @@ class Api_QuestionController extends Zend_Controller_Action {
         return "Orchies";
     }
     
-    public static function getQuestion($idGare) {
+    public static function getQuestion($leQuizz) {
         //TODO $idGare;
-        return array( 1, //id de la question
-            array (
-                'question' => "Une commune française, située dans le département du Nord (59) en région Nord-Pas-de-Calais. Le nom jeté des habitants est les pourchots1, signifiant « porc » en picard.",
-                'choix1' => "GareA",
-                'choix2' => "Orchies",
-                'choix3' => "GareC",
-                'choix4' => "GareD",
-            )
-        );
+        $propositions = array( $leQuizz->reponse, $leQuizz->erreur1, $leQuizz->erreur2,$leQuizz->erreur3 );
+        //shuffle($propositions);
+        return array (
+                'question' => $leQuizz->libelleQuestion,//"Une commune française, située dans le département du Nord (59) en région Nord-Pas-de-Calais. Le nom jeté des habitants est les pourchots1, signifiant « porc » en picard.",
+                'choix1' => $propositions[0],//"GareA",
+                'choix2' => $propositions[1],//"Orchies",
+                'choix3' => $propositions[2],//"GareC",
+                'choix4' => $propositions[3]//"GareD",
+            );
     }
 
-    public static function getSponsor($idQuestion) {
-        return array( 1,
-            array (
-                'nom' => 'Starbuck',
-                'FB' => 'http://lienfacebook/starbuck',
-                'twitter' => null,
-                'google' => null,
-                'url' => 'http://www.starbuck.fr',
-                'logo' => 'Starbucks.png'
-                )
+    public static function getSponsor($leQuizz) {
+        return array (
+                'nom' => $leQuizz->nomPartenaire,
+                'FB' => $leQuizz->fbPartenaire,
+                'twitter' => $leQuizz->twPartenaire,
+                'google' => $leQuizz->gooPartenaire,
+                'url' => $leQuizz->urlPartenaire,
+                'logo' => $leQuizz->logoPartenaire
             );
     }
 
     public static function getIdGare() {
-        return 12434;
+        return "LEW";
     }
 }
