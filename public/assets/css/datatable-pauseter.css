@@ -31,8 +31,9 @@ margin-right: 10px;
 body{
     margin:0px !Important;
     margin-right: 10px;
-    font-size: 1em;
+    font-size: 1.4em;
     font-family: Verdana, Geneva, sans-serif;
+    background-color: #084b96;
 }
 .datatable-pauseter tr.odd{background-color: #084b96}
 .datatable-pauseter tr.even{background-color: #0a1e61}
@@ -51,12 +52,14 @@ body{
     padding-bottom: 4px;
     
 }
-
+#datatable-horaire_processing{
+    height: 0px !Important;
+}
 /*CSS POUR LE BLOCK QUESTION*/
 #dialog-question{
     position: absolute;
-    height:450px;
-    top: 150px;
+    max-height: 300px;
+    top: 350px;
     margin-left: 5%;
     margin-right: 5%;
     float:right;
@@ -64,6 +67,30 @@ body{
     z-index: 999;
     background-color: #fff884;
 }
-#datatable-horaire_processing{
-    height: 0px !Important;
+#logo-pauseter{
+    position:absolute;
+    margin-left: 150px;
+    margin-top: -200px;
+}
+#logo{
+    position:relative;
+    top:-200px;
+    left:-80px;
+    float: right;
+    width:100px;
+    height:100px;
+}
+#textQuestion{
+    color:gray;
+    margin-left: 30px;
+    margin-right: 200px;
+    font-size: 1.2em;
+}
+#textInfo{
+    color:grey;
+    margin-left: 100px;
+    font-size: 1.2em;
+}
+#textInfo span{
+    color:blue;
 }

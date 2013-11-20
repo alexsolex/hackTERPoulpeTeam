@@ -26,24 +26,35 @@ function rafraichir(){
       setInterval(function(){
          oTableHoraire.fnDraw();
     }, 60000);
+    callback();
 }
 
-// callback function to bring a hidden box back
-//    function callback() {
-//      setTimeout(function() {
-//        $( "#dialog-question" ).removeAttr( "style" ).hide().fadeIn();
-//        callend();
-//      }, 6000 );
-//    };
-//    
-//    function callend() {
-//      setTimeout(function() {
-//        $( "#dialog-question" ).effect( "puff" );
-//      }, 3000 );
-//      setTimeout(function() {
-//        callback();
-//      }, 3000 );
-//    };
+ //callback function to bring a hidden box back
+    function callback() {
+      setTimeout(function() {
+          $.ajax({
+             "dataType":"json",
+             "contentType":"application/json; charset=utf-8",
+             "type":"POST",
+             "url": BASE_URL + "/api/question/obtenir/TVS=LEW",
+             "success": function(data){
+                 $('#textQuestion').text(data['question']['question']);
+                 $('#logo').attr('src', data['sponsor']['logo']);
+             }
+          });
+        $( "#dialog-question" ).removeAttr( "style" ).hide().fadeIn();
+        callend();
+      }, 6000 );
+    };
+    
+    function callend() {
+      setTimeout(function() {
+        $( "#dialog-question" ).fadeOut();
+      }, 30000 );
+      setTimeout(function() {
+        callback();
+      }, 30000 );
+    };
 /////////////////////////////////////////////////////////////////////
 //Début
 /////////////////////////////////////////////////////////////////////
@@ -98,18 +109,19 @@ $(document).ready(function(){
            
             // Définition des colonnes
             "aoColumnDefs": [
-                { "sWidth": "50px", "sClass": "col-id", "aTargets": [0] },
-                { "sWidth": "300px", "aTargets": [1] },
-                { "sWidth": "150px", "aTargets": [2] },
-                { "sWidth": "150px", "sClass": "col-jaune", "aTargets": [3] },
-                { "sWidth": "380px","aTargets": [4] },
-                { "sWidth": "120px", "aTargets": [5] }
+                { "sWidth": "70px", "sClass": "col-id", "aTargets": [0] },
+                { "sWidth": "200px", "aTargets": [1] },
+                { "sWidth": "150px","aTargets": [2] },
+                { "sWidth": "150px","sClass": "col-jaune", "aTargets": [3] },
+                { "sWidth": "250px","aTargets": [4] },
+                { "sWidth": "400px", "aTargets": [5] },
+                { "sWidth": "50px", "aTargets": [5] }
             ]
     });
     
     //Lance le rafraichissement de la datatable (Toutes les minutes)
     rafraichir();
-//    callback();
+    
     
      
 });

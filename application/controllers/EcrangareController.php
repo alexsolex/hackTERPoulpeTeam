@@ -123,7 +123,7 @@ class EcrangareController extends Zend_Controller_Action
                 $retardOn = '';
                 break;
         }
-        return $etat . $retard;
+        return $etatOn . $retardOn;
     }
     public static function logoEtType($picto, $type){
         $img = '';

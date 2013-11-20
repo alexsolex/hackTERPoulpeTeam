@@ -1,8 +1,21 @@
 
 <div id="dialog-question" class="ui-widget-content ui-corner-all" style="display: none">
-     <img src="assets/img/logoStarbucks.jpg" alt="logo partenaire" />
+    
+    <div id="logo-pauseter"><img src="assets/img/pauseTER/logo.png" alt="logo" /></div>
+    <br>
+    <br>
+    <div>
     <p id="textQuestion"></p>
-    <p id="textInfo">Pour répondre, connectez-vous avec votre smartphone : http://www.hackathonDeLille.com</p>
+    <div><p id="textInfo">Vous connaissez la réponse ?<span> www.ter-sncf.mobi</span></p></div>
+    </div>
+    <div><img id="logo" src="" alt="logo partenaire" /></div>
+    <object  style="visibility: hidden;height: 0px" >
+<param name="autostart" value="true">
+<param name="src" value="assets/sound/sncfGare.wav">
+<param name="autoplay" value="true">
+<param name="controller" value="true">
+<embed src="assets/sound/sncfGare.wav" controller="true" autoplay="true" autostart="True" type="audio/wav" />
+</object>
 </div>
 <table id="datatable-horaire" class="datatable-pauseter" width="100%">
     <thead>
@@ -22,11 +35,12 @@
     </tbody>
     
 </table>
+
 <div id="message-ter">
     <?php
 
-echo '<div>' . $this->info[2] . '</div>';
-echo '<div>' . $this->info[3] . '</div>';
+//echo '<div>' . $this->info[2] . '</div>';
+//echo '<div>' . $this->info[3] . '</div>';
 
 ?>
 </div>
