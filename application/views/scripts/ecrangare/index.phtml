@@ -1,15 +1,15 @@
-
+<!--Boite de dialog pour l'affichage de la question-->
 <div id="dialog-question" class="ui-widget-content ui-corner-all" style="display: none">
-    
     <div id="logo-pauseter"><img src="<?php $this->baseUrl()?>assets/img/pauseTER/logo.png" alt="logo" /></div>
-    <br>
-    <br>
+        <br>
+        <br>
     <div>
-    <p id="textQuestion"></p>
-    <div><p id="textInfo">Vous connaissez la réponse ?<span> www.ter-sncf.mobi</span></p></div>
+        <p id="textQuestion"></p>
+        <div><p id="textInfo">Vous connaissez la réponse ?<span> www.ter-sncf.mobi</span></p></div>
     </div>
     <div><img id="logo" src="" alt="logo partenaire" /></div>
-<!--    <object  style="visibility: hidden;height: 0px" >
+    <!--Element pour la lecture du fichier son-->
+<!--<object  style="visibility: hidden;height: 0px" >
         <param name="autostart" value="true">
         <param name="src" value="assets/sound/sncfGare.wav">
         <param name="autoplay" value="true">
@@ -17,6 +17,8 @@
         <embed src="<?php $this->baseUrl()?>assets/sound/sncfGare.wav" controller="true" autoplay="true" autostart="True" type="audio/wav" />
     </object>-->
 </div>
+
+<!--Datatable d'affichage des départ-->
 <table id="datatable-horaire" class="datatable-pauseter" width="100%">
     <thead>
         <tr>
@@ -36,6 +38,7 @@
     
 </table>
 
+<!--Element d'affichage des informations en gare NON ACTIF POUR L'INSTANT--> 
 <div id="message-ter">
     <?php
 
