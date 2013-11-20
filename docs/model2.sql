@@ -165,11 +165,11 @@ CREATE INDEX `fk_utilisateur_has_quizz_utilisateur_idx` ON `participer` (`idPart
 
 
 -- -----------------------------------------------------
--- Table `gare_has_partenaire`
+-- Table `situer`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `gare_has_partenaire` ;
+DROP TABLE IF EXISTS `situer` ;
 
-CREATE TABLE IF NOT EXISTS `gare_has_partenaire` (
+CREATE TABLE IF NOT EXISTS `situer` (
   `idGare` INT NOT NULL,
   `idPartenaire` INT NOT NULL,
   PRIMARY KEY (`idPartenaire`, `idGare`),
@@ -185,9 +185,9 @@ CREATE TABLE IF NOT EXISTS `gare_has_partenaire` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_gare_has_partenaire_partenaire1_idx` ON `gare_has_partenaire` (`idPartenaire` ASC);
+CREATE INDEX `fk_gare_has_partenaire_partenaire1_idx` ON `situer` (`idPartenaire` ASC);
 
-CREATE INDEX `fk_gare_has_partenaire_gare1_idx` ON `gare_has_partenaire` (`idGare` ASC);
+CREATE INDEX `fk_gare_has_partenaire_gare1_idx` ON `situer` (`idGare` ASC);
 
 
 -- -----------------------------------------------------
