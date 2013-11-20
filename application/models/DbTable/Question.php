@@ -29,6 +29,7 @@ class Application_Model_DbTable_Question extends Zend_Db_Table_Abstract
 
      
     public function getQuestion($idGare) {
+        //WIP
         $select = $this->select()
             ->setIntegrityCheck(false)
             ->from(array('q'=>'question'),

@@ -93,7 +93,7 @@ class Api_QuestionController extends Zend_Controller_Action {
                 'twitter' => null,
                 'google' => null,
                 'url' => 'http://www.starbuck.fr',
-                'logo' => 'starbuck.png'
+                'logo' => 'logoStarbucks.jpg'
                 )
             );
     }
