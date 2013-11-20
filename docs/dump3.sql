@@ -98,7 +98,7 @@ CREATE TABLE `partenaire` (
 
 LOCK TABLES `partenaire` WRITE;
 /*!40000 ALTER TABLE `partenaire` DISABLE KEYS */;
-INSERT INTO `partenaire` VALUES (1,'TER',NULL,NULL,NULL,'www.ter.sncf.fr','ter.png','TER SNCF'),(2,'Starbuck',NULL,NULL,NULL,'www.starbuck.Fr','starbuck_logo.jpg','Starbuck vous propose des cafés dans cette gare');
+INSERT INTO `partenaire` VALUES (1,'TER',NULL,NULL,NULL,'www.ter.sncf.fr','ter.png','TER SNCF'),(2,'Starbuck',NULL,NULL,NULL,'www.starbuck.Fr','Starbucks.png','Starbuck vous propose des cafés dans cette gare');
 /*!40000 ALTER TABLE `partenaire` ENABLE KEYS */;
 UNLOCK TABLES;
 
