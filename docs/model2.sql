@@ -4,19 +4,19 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 
 -- -----------------------------------------------------
--- Table `utilisateur`
+-- Table `participant`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `utilisateur` ;
+DROP TABLE IF EXISTS `participant` ;
 
-CREATE TABLE IF NOT EXISTS `utilisateur` (
-  `idutilisateur` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `participant` (
+  `idParticipant` INT NOT NULL AUTO_INCREMENT,
   `fb` VARCHAR(255) NULL,
   `tw` VARCHAR(255) NULL,
   `google` VARCHAR(255) NULL,
   `nom` VARCHAR(255) NULL,
   `prenom` VARCHAR(255) NULL,
   `pseudo` VARCHAR(255) NULL,
-  PRIMARY KEY (`idutilisateur`))
+  PRIMARY KEY (`idParticipant`))
 ENGINE = InnoDB;
 
 
@@ -26,15 +26,15 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `partenaire` ;
 
 CREATE TABLE IF NOT EXISTS `partenaire` (
-  `idpartenaire` INT NOT NULL AUTO_INCREMENT,
-  `nompartenaire` VARCHAR(100) NULL,
-  `fbpartenaire` VARCHAR(255) NULL,
-  `twpartenaire` VARCHAR(255) NULL,
-  `goopartenaire` VARCHAR(255) NULL,
-  `urlpartenaire` VARCHAR(255) NULL,
-  `logopartenaire` VARCHAR(255) NULL,
-  `descriptionpartenaire` VARCHAR(255) NULL,
-  PRIMARY KEY (`idpartenaire`))
+  `idPartenaire` INT NOT NULL AUTO_INCREMENT,
+  `nomPartenaire` VARCHAR(100) NULL,
+  `fbPartenaire` VARCHAR(255) NULL,
+  `twPartenaire` VARCHAR(255) NULL,
+  `gooPartenaire` VARCHAR(255) NULL,
+  `urlPartenaire` VARCHAR(255) NULL,
+  `logoPartenaire` VARCHAR(255) NULL,
+  `descPartenaire` VARCHAR(255) NULL,
+  PRIMARY KEY (`idPartenaire`))
 ENGINE = InnoDB;
 
 
@@ -44,14 +44,15 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `question` ;
 
 CREATE TABLE IF NOT EXISTS `question` (
-  `idquestion` INT NOT NULL AUTO_INCREMENT,
-  `libelle` VARCHAR(500) NOT NULL,
+  `idQuestion` INT NOT NULL AUTO_INCREMENT,
+  `libelle` VARCHAR(1000) NOT NULL,
   `reponse` VARCHAR(255) NOT NULL,
   `erreur1` VARCHAR(255) NOT NULL,
   `erreur2` VARCHAR(255) NOT NULL,
   `erreur3` VARCHAR(255) NOT NULL,
   `url` VARCHAR(255) NULL,
-  PRIMARY KEY (`idquestion`))
+  `type` VARCHAR(255) NULL DEFAULT 'wikipedia',
+  PRIMARY KEY (`idQuestion`))
 ENGINE = InnoDB;
 
 
@@ -61,14 +62,19 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `gain` ;
 
 CREATE TABLE IF NOT EXISTS `gain` (
-  `idgain` INT NOT NULL AUTO_INCREMENT,
-  `libelle` VARCHAR(45) NOT NULL,
-  `information` VARCHAR(45) NULL,
-  `partenaire_idpartenaire` INT NOT NULL,
-  PRIMARY KEY (`idgain`))
+  `idGain` INT NOT NULL AUTO_INCREMENT,
+  `libelle` VARCHAR(255) NOT NULL,
+  `information` VARCHAR(255) NULL,
+  `idPartenaire` INT NOT NULL,
+  PRIMARY KEY (`idGain`),
+  CONSTRAINT `fk_gain_partenaire1`
+    FOREIGN KEY (`idPartenaire`)
+    REFERENCES `partenaire` (`idPartenaire`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_gain_partenaire1_idx` ON `gain` (`partenaire_idpartenaire` ASC);
+CREATE INDEX `fk_gain_partenaire1_idx` ON `gain` (`idPartenaire` ASC);
 
 
 -- -----------------------------------------------------
@@ -77,24 +83,44 @@ CREATE INDEX `fk_gain_partenaire1_idx` ON `gain` (`partenaire_idpartenaire` ASC)
 DROP TABLE IF EXISTS `quizz` ;
 
 CREATE TABLE IF NOT EXISTS `quizz` (
-  `idquizz` INT NOT NULL AUTO_INCREMENT,
-  `datedebut` DATETIME NULL,
-  `datefin` DATETIME NULL,
-  `estrepondu` TINYINT(1) NULL,
-  `partenaire_idpartenaire` INT NOT NULL,
-  `question_idquestion` INT NOT NULL,
-  `gain_idgain` INT NULL,
-  `utilisateur_idutilisateur` INT NULL,
-  PRIMARY KEY (`idquizz`))
+  `idQuizz` INT NOT NULL AUTO_INCREMENT,
+  `dateDebut` DATETIME NULL,
+  `dateFin` DATETIME NULL,
+  `estRepondu` TINYINT(1) NULL,
+  `idPartenaire` INT NOT NULL,
+  `idQuestion` INT NOT NULL,
+  `idGain` INT NULL,
+  `idParticipant` INT NULL,
+  PRIMARY KEY (`idQuizz`),
+  CONSTRAINT `fk_quizz_partenaire1`
+    FOREIGN KEY (`idPartenaire`)
+    REFERENCES `partenaire` (`idPartenaire`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_quizz_question1`
+    FOREIGN KEY (`idQuestion`)
+    REFERENCES `question` (`idQuestion`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_quizz_gain1`
+    FOREIGN KEY (`idGain`)
+    REFERENCES `gain` (`idGain`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_quizz_utilisateur1`
+    FOREIGN KEY (`idParticipant`)
+    REFERENCES `participant` (`idParticipant`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_quizz_partenaire1_idx` ON `quizz` (`partenaire_idpartenaire` ASC);
+CREATE INDEX `fk_quizz_partenaire1_idx` ON `quizz` (`idPartenaire` ASC);
 
-CREATE INDEX `fk_quizz_question1_idx` ON `quizz` (`question_idquestion` ASC);
+CREATE INDEX `fk_quizz_question1_idx` ON `quizz` (`idQuestion` ASC);
 
-CREATE INDEX `fk_quizz_gain1_idx` ON `quizz` (`gain_idgain` ASC);
+CREATE INDEX `fk_quizz_gain1_idx` ON `quizz` (`idGain` ASC);
 
-CREATE INDEX `fk_quizz_utilisateur1_idx` ON `quizz` (`utilisateur_idutilisateur` ASC);
+CREATE INDEX `fk_quizz_utilisateur1_idx` ON `quizz` (`idParticipant` ASC);
 
 
 -- -----------------------------------------------------
@@ -103,28 +129,39 @@ CREATE INDEX `fk_quizz_utilisateur1_idx` ON `quizz` (`utilisateur_idutilisateur`
 DROP TABLE IF EXISTS `gare` ;
 
 CREATE TABLE IF NOT EXISTS `gare` (
-  `idgare` INT NOT NULL AUTO_INCREMENT,
+  `idGare` INT NOT NULL AUTO_INCREMENT,
   `uic` VARCHAR(45) NOT NULL,
   `nomgare` VARCHAR(255) NOT NULL,
   `region` VARCHAR(255) NULL,
-  PRIMARY KEY (`idgare`))
+  `tvs` VARCHAR(45) NULL,
+  PRIMARY KEY (`idGare`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `participation`
+-- Table `participer`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `participation` ;
+DROP TABLE IF EXISTS `participer` ;
 
-CREATE TABLE IF NOT EXISTS `participation` (
-  `idutilisateur` INT NOT NULL,
-  `idquizz` INT NOT NULL,
-  PRIMARY KEY (`idutilisateur`, `idquizz`))
+CREATE TABLE IF NOT EXISTS `participer` (
+  `idParticipant` INT NOT NULL,
+  `idQuizz` INT NOT NULL,
+  PRIMARY KEY (`idParticipant`, `idQuizz`),
+  CONSTRAINT `fk_utilisateur_has_quizz_utilisateur`
+    FOREIGN KEY (`idParticipant`)
+    REFERENCES `participant` (`idParticipant`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_utilisateur_has_quizz_quizz1`
+    FOREIGN KEY (`idQuizz`)
+    REFERENCES `quizz` (`idQuizz`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_utilisateur_has_quizz_quizz1_idx` ON `participation` (`idquizz` ASC);
+CREATE INDEX `fk_utilisateur_has_quizz_quizz1_idx` ON `participer` (`idQuizz` ASC);
 
-CREATE INDEX `fk_utilisateur_has_quizz_utilisateur_idx` ON `participation` (`idutilisateur` ASC);
+CREATE INDEX `fk_utilisateur_has_quizz_utilisateur_idx` ON `participer` (`idParticipant` ASC);
 
 
 -- -----------------------------------------------------
@@ -133,13 +170,24 @@ CREATE INDEX `fk_utilisateur_has_quizz_utilisateur_idx` ON `participation` (`idu
 DROP TABLE IF EXISTS `gare_has_partenaire` ;
 
 CREATE TABLE IF NOT EXISTS `gare_has_partenaire` (
-  `gare_idgare` INT NOT NULL,
-  `partenaire_idpartenaire` INT NOT NULL)
+  `idGare` INT NOT NULL,
+  `idPartenaire` INT NOT NULL,
+  PRIMARY KEY (`idPartenaire`, `idGare`),
+  CONSTRAINT `fk_gare_has_partenaire_gare1`
+    FOREIGN KEY (`idGare`)
+    REFERENCES `gare` (`idGare`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_gare_has_partenaire_partenaire1`
+    FOREIGN KEY (`idPartenaire`)
+    REFERENCES `partenaire` (`idPartenaire`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_gare_has_partenaire_partenaire1_idx` ON `gare_has_partenaire` (`partenaire_idpartenaire` ASC);
+CREATE INDEX `fk_gare_has_partenaire_partenaire1_idx` ON `gare_has_partenaire` (`idPartenaire` ASC);
 
-CREATE INDEX `fk_gare_has_partenaire_gare1_idx` ON `gare_has_partenaire` (`gare_idgare` ASC);
+CREATE INDEX `fk_gare_has_partenaire_gare1_idx` ON `gare_has_partenaire` (`idGare` ASC);
 
 
 -- -----------------------------------------------------
@@ -148,13 +196,24 @@ CREATE INDEX `fk_gare_has_partenaire_gare1_idx` ON `gare_has_partenaire` (`gare_
 DROP TABLE IF EXISTS `gare_has_quizz` ;
 
 CREATE TABLE IF NOT EXISTS `gare_has_quizz` (
-  `gare_idgare` INT NOT NULL,
-  `quizz_idquizz` INT NOT NULL)
+  `idGare` INT NOT NULL,
+  `idQuizz` INT NOT NULL,
+  PRIMARY KEY (`idQuizz`, `idGare`),
+  CONSTRAINT `fk_gare_has_quizz_gare1`
+    FOREIGN KEY (`idGare`)
+    REFERENCES `gare` (`idGare`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_gare_has_quizz_quizz1`
+    FOREIGN KEY (`idQuizz`)
+    REFERENCES `quizz` (`idQuizz`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_gare_has_quizz_quizz1_idx` ON `gare_has_quizz` (`quizz_idquizz` ASC);
+CREATE INDEX `fk_gare_has_quizz_quizz1_idx` ON `gare_has_quizz` (`idQuizz` ASC);
 
-CREATE INDEX `fk_gare_has_quizz_gare1_idx` ON `gare_has_quizz` (`gare_idgare` ASC);
+CREATE INDEX `fk_gare_has_quizz_gare1_idx` ON `gare_has_quizz` (`idGare` ASC);
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
