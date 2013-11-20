@@ -39,7 +39,7 @@ function rafraichir(){
              "url": BASE_URL + "/api/question/obtenir/TVS=LEW",
              "success": function(data){
                  $('#textQuestion').text(data['question']['question']);
-                 $('#logo').attr('src', data['sponsor']['logo']);
+                 $('#logo').attr('src', BASE_URL + '/assets/img/partenaires/' + data['sponsor']['logo']);
              }
           });
         $( "#dialog-question" ).removeAttr( "style" ).hide().fadeIn();
@@ -65,7 +65,7 @@ $(document).ready(function(){
             "bProcessing": true,
             "bServerSide": true,
             "bStateSave": true,
-            "sAjaxSource": "http://localhost/hackTERPoulpeTeam/public/ecrangare/departs?format=json",
+            "sAjaxSource": BASE_URL + "/ecrangare/departs?format=json",
             "sServerMethod": "POST",
 
          
