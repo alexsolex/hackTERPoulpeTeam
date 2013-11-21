@@ -2,6 +2,8 @@
 
 class Api_QuestionController extends Zend_Controller_Action {
 
+    const DUREE_QUESTION = 60;//3minutes
+    
     public function init() {
         //Context : on le force en json
         $this->_request->setParam('format', 'json');
@@ -36,34 +38,71 @@ class Api_QuestionController extends Zend_Controller_Action {
         //$idGare = $this->getIdGare();
         $tvs = $this->_request->getParam('TVS');
         
+        //récupère le quizz en cours
         $leQuizz = $this->getQuizzGare($tvs);
-        if (is_null($leQuizz)) {
-            //echo $exc->getTraceAsString();
-            $this->_response->setHttpResponseCode(404);
-            $this->view->message = "Aucun Quizz trouvé";
-            return;
+        
+//        if (!is_null($leQuizz)) {
+//            $dateDebut = new Zend_Date( $leQuizz->dateDebut ,'dd/MM/yyyy HH:mm:ss' );
+//            if ($dateDebut->addSecond(self::)->compare(Zend_Date::now())<0){
+//                $this->view->dateDebut = $dateDebut;
+//                $this->view->message = "quizz expiré";
+//                $this->terminerQuizz($leQuizz->idQuizz);
+//                return;
+//            }
+//                    
+//        }
+
+//        $this->view->test = $this->estActif($leQuizz)->toString('dd/MM/yyyy HH:mm:ss');
+//        $this->view->test1 = $this->estActif($leQuizz)->addSecond(self::DUREE_QUESTION)->toString('dd/MM/yyyy HH:mm:ss');
+//        $this->view->test2 =  Zend_Date::now()->toString('dd/MM/yyyy HH:mm:ss');
+//        $this->view->test3 = $this->estActif($leQuizz)->addSecond(self::DUREE_QUESTION)->compare(Zend_Date::now());
+//        return;
+        
+        //Termine le quizz si celui ci est expiré
+        if (!is_null($leQuizz) && !$this->estActif($leQuizz) ) {
+            //$this->view->dateDebut = $dateDebut;
+            $this->view->message = "quizz expiré";
+            $this->terminerQuizz($leQuizz->idQuizz);
+            //return;
+        
+        }
+        //Si le quizz est terminé ou plus actif (expiration
+        if (is_null($leQuizz) || !$this->estActif($leQuizz) ) {
+            //  - récupérer le prochain quizz dans la liste
+            $t = new Application_Model_DbTable_Quizz();
+            $nouveauQuizz = $t->getNewQuizz($tvs)->current();
+            
+            
+            //  - si il n'y a pas de nouveauQuizz, alors lancer un nettoyage de la table
+            //      (supprimer les datesDebut et dateFin pour tous les quizz de la gare)
+            if (is_null($nouveauQuizz)) {
+                //Nettoye les quizz de la gare (dateDebut et dateFin à null)
+                $t->restartQuizzList($tvs);
+                //obtient ensuite le premier quizz
+                $leQuizz = $t->getNewQuizz($tvs)->current();//$this->getQuizzGare($tvs);
+                
+            }
+            else {
+                $leQuizz = $nouveauQuizz;
+            }
+            
+            $leQuizz->dateDebut = Zend_Date::now()->toString('yyyy-MM-dd HH:mm:ss');
+            
+            $this->demarrerQuizz($leQuizz->idQuizz);
             
         }
 
-        //$this->view->quizz = $leQuizz->toArray();
         
-        //teste si la question est expirée
-        $dateDebut = new Zend_Date( $leQuizz->dateDebut ,'dd/MM/yyyy HH:mm:ss' );
-        if ($dateDebut->addSecond(5*60)->compare(Zend_Date::now())<0) {
-            $this->view->dateDebut = $dateDebut;
-            $this->view->message = "quizz expiré";
-            $this->terminerQuizz($leQuizz->idQuizz);
-            return;
-        }
+        
+        //
+        // présentation des données
+        //
         
         // récupère la question en cours
         $question =  $this->getQuestion($leQuizz);
-        
-        //idQuestion
-        $idQuestion = $leQuizz->idQuestion;
+        $leSponsor = $this->getSponsor($leQuizz);
         
         $this->view->question = $question;
-        $leSponsor = $this->getSponsor($leQuizz);
         $this->view->sponsor = $leSponsor;
         $this->view->tvs = $tvs;
         
@@ -97,6 +136,7 @@ class Api_QuestionController extends Zend_Controller_Action {
         
     }
 
+    
     /*
      * Action pour démarrer un nouveau quizz
      */
@@ -126,7 +166,7 @@ class Api_QuestionController extends Zend_Controller_Action {
         }
         //  - positionner la dateDebut
         $quizz = $t->fetchRow($t->select()->where('idQuizz = ?', $nouveauQuizz->idQuizz));
-        $quizz->dateDebut = Zend_Date::now();
+        $quizz->dateDebut = Zend_Date::now()->toString('yyyy-MM-dd HH:mm:ss');
         $quizz->save();
         
         // récupère la question en cours
@@ -137,13 +177,20 @@ class Api_QuestionController extends Zend_Controller_Action {
         $this->view->sponsor = $leSponsor;
         $this->view->tvs = $tvs;
     }
-    
+    public static function estActif($leQuizz) {
+        $dateDebut = new Zend_Date( $leQuizz->dateDebut );//,'dd/MM/yyyy HH:mm:ss' );
+        if ($dateDebut->addSecond(self::DUREE_QUESTION)->compare(Zend_Date::now())<0){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
     public static function getQuizzGare($tvs) {
         
         $tableQuizz = new Application_Model_DbTable_Quizz();
         $quizzRowset = $tableQuizz->getQuizz($tvs);
         if ($quizzRowset->count()<1) {
-            //throw new Exception("Pas de quizz en cours");
             return null;
         }
         $leQuizz = $quizzRowset->current();
@@ -154,10 +201,16 @@ class Api_QuestionController extends Zend_Controller_Action {
         //TODO : insérer la date 
         $t = new Application_Model_DbTable_Quizz();
         $quizz = $t->fetchRow($t->select()->where('idQuizz = ?', $idQuizz));
-        $quizz->dateFin = Zend_Date::now();
+        $quizz->dateFin = Zend_Date::now()->toString('yyyy-MM-dd HH:mm:ss');
         $quizz->save();
     }
     
+    public static function demarrerQuizz($idQuizz) {
+        $t = new Application_Model_DbTable_Quizz();
+        $quizz = $t->fetchRow($t->select()->where('idQuizz = ?', $idQuizz));
+        $quizz->dateDebut = Zend_Date::now()->toString('yyyy-MM-dd HH:mm:ss');
+        $quizz->save();
+    }
     public static function getSolution() {
         return "Orchies";
     }
