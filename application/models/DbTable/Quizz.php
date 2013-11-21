@@ -68,10 +68,10 @@ class Application_Model_DbTable_Quizz extends Zend_Db_Table_Abstract
                 ->where('g.TVS=?',$tvs) //quizz pour la gare
                 ->where('qz.dateDebut IS NOT NULL')
                 ->where('qz.dateFin IS NULL')
-                ->order('qz.dateDebut DESC');
-                //->limit(1);     
+                ->order('qz.dateDebut DESC')
+                ->limit(1);     
         $result = $this->fetchAll($select);
-        Zend_Registry::set('sql',$select->assemble());
+        //Zend_Registry::set('sql',$select->assemble());
         return $result;
     }
     
@@ -96,11 +96,42 @@ class Application_Model_DbTable_Quizz extends Zend_Db_Table_Abstract
                 ->where('g.TVS=?',$tvs) //quizz pour la gare
                 ->where('qz.dateDebut IS NULL')
                 ->where('qz.dateFin IS NULL')
-                ->order('qz.idQuizz DESC');
-                //->limit(1);     
+                ->order('qz.idQuizz DESC')
+                ->limit(1);     
         $result = $this->fetchAll($select);
         Zend_Registry::set('sql',$select->assemble());
         return $result;
+    }
+    
+    public function restartQuizzList($tvs) {
+        //UPDATE `pauseter`.`quizz` SET `dateFin`=NULL WHERE `idQuizz`='2';
+        
+        //récupérer l'idGare correspondant au TVS
+        $tGare = new Application_Model_DbTable_Gare();
+        $laGare = $tGare->getGareByTvs($tvs);
+        $idGare = 0;
+        if (!is_null($laGare)) {
+            $idGare = $laGare->idGare;
+        }
+        
+        //Récupérer les idQuizz
+        //$n = $this->update($data, $where);
+        $select = $this->select()->from('quizz',array('idQuizz'))->where('idGare = ?',$idGare);
+        $lesIdsQuizz = $this->fetchAll($select);
+        
+        $lesIdsQuizz = array(1,2);
+        //update les quizz
+        $data = array('dateDebut' => null , 'dateFin' => null, 'idParticipant' => null ,'estRepondu' => false);
+        $where = $this->getAdapter()->quoteInto('idQuizz IN (?)', $lesIdsQuizz);
+        $this->update($data,$where);
+        
+        //update la table participer
+        $where = $this->getAdapter()->quoteInto('idQuizz IN (?)', $lesIdsQuizz);//array("idQuizz IN (?)",$lesIdsQuizz);
+        $tParticiper = new Application_Model_DbTable_Participer();
+        
+        $n = $tParticiper->delete($where);
+        
+        
     }
 }
 
