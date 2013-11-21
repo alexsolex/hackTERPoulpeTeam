@@ -32,8 +32,8 @@ function rafraichir(){
           $.ajax({
              "dataType":"json",
              "contentType":"application/json; charset=utf-8",
-             "type":"POST",
-             "url": BASE_URL + "/api/question/obtenir/TVS=LEW",
+             "type":"GET",
+             "url": BASE_URL + "/api/question/obtenir/TVS/LEW",
              "success": function(data){
                  var text = data['question']['question'];
                  (text.length > 250)? text + '...':text;
