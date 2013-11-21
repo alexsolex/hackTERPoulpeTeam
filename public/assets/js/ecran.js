@@ -36,7 +36,7 @@ function rafraichir(){
              "url": BASE_URL + "/api/question/obtenir/TVS/LEW",
              "success": function(data){
                  var text = data['question']['question'];
-                 (text.length > 250)? text + '...':text;
+                 text = (text.length > 250)? text.substr(0,250) + '...':text;
                  $('#textQuestion').text(text);
                  $('#logo').attr('src', BASE_URL + '/assets/img/partenaires/' + data['sponsor']['logo']);
                  $( "#dialog-question" ).removeAttr( "style" ).hide().fadeIn();
