@@ -11,6 +11,8 @@ class Api_QuestionController extends Zend_Controller_Action {
                       ->addActionContext('error','json')
                       ->addActionContext('repondre','json')
                       ->addActionContext('obtenir','json')
+                      ->addActionContext('demarrer','json')
+                
                       
                       ->initContext();
     }
@@ -34,15 +36,26 @@ class Api_QuestionController extends Zend_Controller_Action {
         //$idGare = $this->getIdGare();
         $tvs = $this->_request->getParam('TVS');
         
-        $tableQuizz = new Application_Model_DbTable_Quizz();
-        $quizzRowset = $tableQuizz->getQuizz($tvs);
-        if ($quizzRowset->count()<1) {
-            $this->_response->setHttpResponseCode (400);
+        $leQuizz = $this->getQuizzGare($tvs);
+        if (is_null($leQuizz)) {
+            //echo $exc->getTraceAsString();
+            $this->_response->setHttpResponseCode(404);
+            $this->view->message = "Aucun Quizz trouvé";
+            return;
+            
+        }
+
+        //$this->view->quizz = $leQuizz->toArray();
+        
+        //teste si la question est expirée
+        $dateDebut = new Zend_Date( $leQuizz->dateDebut ,'dd/MM/yyyy HH:mm:ss' );
+        if ($dateDebut->addSecond(5*60)->compare(Zend_Date::now())<0) {
+            $this->view->dateDebut = $dateDebut;
+            $this->view->message = "quizz expiré";
+            $this->terminerQuizz($leQuizz->idQuizz);
             return;
         }
-        $leQuizz = $quizzRowset->current();
-        $this->view->quizz = $leQuizz->toArray();
-
+        
         // récupère la question en cours
         $question =  $this->getQuestion($leQuizz);
         
@@ -57,14 +70,25 @@ class Api_QuestionController extends Zend_Controller_Action {
     }
     
     public function repondreAction() {
+        $tvs = $this->_request->getParam('TVS');
+        try {
+            $leQuizz = $this->getQuizzGare($tvs);
+        } catch (Exception $exc) {
+            //echo $exc->getTraceAsString();
+            $this->_response->setHttpResponseCode (400);
+            return;
+        }
+
+        
         $bienRepondu = false;
         //récupérer les params :
         //  - l'ID question
         //  - le num réponse
         $laReponse = $this->_request->getParam('reponse',"");
-        $bonneReponse = $this->getSolution();
+        $bonneReponse = $leQuizz->reponse;
         if ($laReponse == $bonneReponse) {
             $bienRepondu = true;
+            $this->terminerQuizz($leQuizz->idQuizz);
         }
         $this->view->reponseOK = $bienRepondu;
         $this->view->solution = $bonneReponse;
@@ -73,7 +97,66 @@ class Api_QuestionController extends Zend_Controller_Action {
         
     }
 
+    /*
+     * Action pour démarrer un nouveau quizz
+     */
+    public function demarrerAction() {
+        //TODO :
+        //  - s'assurer qu'un quizz n'est pas déjà en cours
+        $tvs = $this->_request->getParam('TVS');
+        $leQuizz = $this->getQuizzGare($tvs);
+        if (!is_null($leQuizz)) {
+            //echo $exc->getTraceAsString();
+            $this->_response->setHttpResponseCode (400);
+            $this->message = "Un quizz est déjà en cours";
+            return;
+        }
+        //  - récupérer le prochain quizz dans la liste
+        $t = new Application_Model_DbTable_Quizz();
+        $nouveauQuizz = $t->getNewQuizz($tvs)->current();
+        //$this->view->newQuizz = $nouveauQuizz->toArray();
+        
+        //  - si il n'y a pas de nouveauQuizz, alors lancer un nettoyage de la table
+        //      (supprimer les datesDebut et dateFin pour tous les quizz de la gare)
+        if (is_null($nouveauQuizz)) {
+            //TODO
+            $this->_response->setHttpResponseCode(500);
+            $this->view->message = "Not implemented !";
+            return;
+        }
+        //  - positionner la dateDebut
+        $quizz = $t->fetchRow($t->select()->where('idQuizz = ?', $nouveauQuizz->idQuizz));
+        $quizz->dateDebut = Zend_Date::now();
+        $quizz->save();
+        
+        // récupère la question en cours
+        $question =  $this->getQuestion($nouveauQuizz);
+        
+        $this->view->question = $question;
+        $leSponsor = $this->getSponsor($nouveauQuizz);
+        $this->view->sponsor = $leSponsor;
+        $this->view->tvs = $tvs;
+    }
     
+    public static function getQuizzGare($tvs) {
+        
+        $tableQuizz = new Application_Model_DbTable_Quizz();
+        $quizzRowset = $tableQuizz->getQuizz($tvs);
+        if ($quizzRowset->count()<1) {
+            //throw new Exception("Pas de quizz en cours");
+            return null;
+        }
+        $leQuizz = $quizzRowset->current();
+        return $leQuizz;
+    }
+
+    public static function terminerQuizz($idQuizz) {
+        //TODO : insérer la date 
+        $t = new Application_Model_DbTable_Quizz();
+        $quizz = $t->fetchRow($t->select()->where('idQuizz = ?', $idQuizz));
+        $quizz->dateFin = Zend_Date::now();
+        $quizz->save();
+    }
     
     public static function getSolution() {
         return "Orchies";

@@ -74,5 +74,33 @@ class Application_Model_DbTable_Quizz extends Zend_Db_Table_Abstract
         Zend_Registry::set('sql',$select->assemble());
         return $result;
     }
+    
+    public function getNewQuizz($tvs) 
+    {
+        $select = $this->select()
+                ->setIntegrityCheck(false)
+                ->from(array('qz'=>'quizz'),
+                        array('idQuizz','qz.dateDebut','qz.dateFin','qz.estRepondu','qz.idPartenaire','qz.idQuestion','qz.idGain','qz.idParticipant','qz.idGare'))
+                ->joinInner(array('g'=>'gare'),
+                        'qz.idGare=g.idGare',
+                        array('g.uic','g.nomgare','g.region','g.tvs'))
+                ->joinInner(array('qst'=>'question'),
+                        'qst.idQuestion = qz.idQuestion',
+                        array('qst.libelle AS libelleQuestion','qst.reponse','qst.erreur1','qst.erreur2','qst.erreur3','qst.url','qst.type'))
+                ->joinInner('gain','gain.idGain = qz.idGain',
+                        array('gain.libelle AS libelleGain','gain.information AS infoGain','gain.idPartenaire AS idPartenaireGain'))
+                ->joinInner(array('pa'=>'partenaire'),
+                        'pa.idPartenaire = qz.idPartenaire',
+                        array('pa.nomPartenaire','pa.fbPartenaire','pa.twPartenaire','pa.gooPartenaire','pa.urlPartenaire','pa.logoPartenaire','pa.descPartenaire'))
+                
+                ->where('g.TVS=?',$tvs) //quizz pour la gare
+                ->where('qz.dateDebut IS NULL')
+                ->where('qz.dateFin IS NULL')
+                ->order('qz.idQuizz DESC');
+                //->limit(1);     
+        $result = $this->fetchAll($select);
+        Zend_Registry::set('sql',$select->assemble());
+        return $result;
+    }
 }
 
