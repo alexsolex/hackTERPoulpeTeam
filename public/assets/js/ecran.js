@@ -35,7 +35,9 @@ function rafraichir(){
              "type":"POST",
              "url": BASE_URL + "/api/question/obtenir/TVS=LEW",
              "success": function(data){
-                 $('#textQuestion').text(data['question']['question']);
+                 var text = data['question']['question'];
+                 (text.length > 250)? text + '...':text;
+                 $('#textQuestion').text(text);
                  $('#logo').attr('src', BASE_URL + '/assets/img/partenaires/' + data['sponsor']['logo']);
              }
           });
