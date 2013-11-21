@@ -14,8 +14,8 @@ class EcrangareController extends Zend_Controller_Action
             $this->soapClient->setWsdl($endpoint);
             $this->soapClient->setSoapVersion(SOAP_1_1);
             
-        } catch (Exception $ex) {
-                echo $ex->getMessage();
+        } catch (SoapFault $ex) {
+                 echo 'C\'est la merde mec<br>' + $ex->getMessage();
         }
        
         //Context : on le force en json
@@ -241,79 +241,50 @@ class EcrangareController extends Zend_Controller_Action
                 $train->voie//      "voie"
                 );
         }
-                    
-//                "attribut_voie": "",
-//                "heure": "2013-11-19T17:35:00.000Z",
-//                "ligne": 1,
-//                "num": "9153",
-//                "origdest": "ST PANCRAS",
-//                "picto": "31",
-//                "trainTypeChoice": {
-//                    "etat": "",
-//                    "retard": "",
-//                    "valid": false
-//                },
-//                "type": "EUROSTAR",
-//                "valid": false,
-//                "voie": "4"
         
         $this->view->aaData = $retour;
     }
-    
+        public function arriveesAction() {
+        $soapResults = $this->arrivees('LEW');
+        $retour = array();
+        foreach ($soapResults->train as $train) {
+            $tabLogoType = $this->logoEtType($train->picto, $train->type);
+            $retour[] = array(
+                $tabLogoType['logo'], //"logo",
+                $tabLogoType['type'],//      "transporteur",
+                $train->num, //      "numéro de train",
+                substr($train->heure,11,5),//      "heure depart",
+                $train->origdest,//      "destination",
+                $this->retard($train->trainTypeChoice),//      "information",
+                $train->voie//      "voie"
+                );
+        }
+        
+        $this->view->aaData = $retour;
+    }
     
     public function departs($codeGare){
         try{
             
            $result = $this->soapClient->getTableauTrainsDepart($codeGare);
-           //$result est le retour de l'appel au webservice
-           //Dois retourner
-           //Pour les champs non renseignés => ""
-                        //{
-                        //  "aaData": [
-                        //    [
-                        //      "logo",
-                        //      "transporteur",
-                        //      "numéro de train",
-                        //      "heure depart",
-                        //      "destination",
-                        //      "information",
-                        //      "voie"
-                        //    ],
-                        //    [
-                        //       "logo",
-                        //      "transporteur",
-                        //      "numéro de train",
-                        //      "heure depart",
-                        //      "destination",
-                        //      "information",
-                        //      "voie"
-                        //    ],
-                        //    [
-                        //       "logo",
-                        //      "transporteur",
-                        //      "numéro de train",
-                        //      "heure depart",
-                        //      "destination",
-                        //      "information",
-                        //      "voie"
-                        //    ]
-                        //      
-                        //}
+          
         } catch (SoapFault $ex) {
-                echo $ex->getMessage();
+                
+                echo 'C\'est la merde mec<br>' + $ex->getMessage();
         }
         return $result;
            
     }
     
-    public function arrivees(){
+    public function arrivees($codeGare){
         try{
            $result = $this->soapClient->getTableauTrainsArrivee('LEW');
            //$result est le retour de l'appel au webservice
            //Idem que pour les departs
         } catch (SoapFault $ex) {
-                echo $ex->getMessage();
+                echo 'C\'est la merde mec<br>' + $ex->getMessage();
         }
+        return $result;
     }
 }
 

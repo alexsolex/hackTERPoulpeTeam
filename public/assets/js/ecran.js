@@ -32,16 +32,17 @@ function rafraichir(){
           $.ajax({
              "dataType":"json",
              "contentType":"application/json; charset=utf-8",
-             "type":"GET",
+             "type":"POST",
              "url": BASE_URL + "/api/question/obtenir/TVS/LEW",
              "success": function(data){
                  var text = data['question']['question'];
                  (text.length > 250)? text + '...':text;
                  $('#textQuestion').text(text);
                  $('#logo').attr('src', BASE_URL + '/assets/img/partenaires/' + data['sponsor']['logo']);
+                 $( "#dialog-question" ).removeAttr( "style" ).hide().fadeIn();
              }
           });
-        $( "#dialog-question" ).removeAttr( "style" ).hide().fadeIn();
+        
         callend();
       }, 6000 );
     };
