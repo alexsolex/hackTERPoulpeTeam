@@ -20,14 +20,14 @@ class Api_QuestionController extends Zend_Controller_Action {
     }
 
     public function indexAction() {
-//        $idGare = $this->getIdGare();
-//        $question =  $this->getQuestion($idGare);
-//        $arrayQuestion = $question[1];
-//        $idQuestion = $question[0];
-//        $this->view->question = $arrayQuestion;
-//        $leSponsor = $this->getSponsor($idQuestion);
-//        $this->view->sponsor = $leSponsor[1];
-        
+
+        $auth = TBS_Auth::getInstance();
+        if (!$auth->hasIdentity()) {
+            $this->_response->setHttpResponseCode(300);
+            $this->view->message("non connecté");
+            return;
+        }
+        $this->view->providers = $auth->getIdentity()->toArray();
     }
     
     /*
@@ -38,25 +38,14 @@ class Api_QuestionController extends Zend_Controller_Action {
         //$idGare = $this->getIdGare();
         $tvs = $this->_request->getParam('TVS');
         
-        //récupère le quizz en cours
-        $leQuizz = $this->getQuizzGare($tvs);
+        // parametre 
+        // TODO peut être : un paramètre pour indiquer si la requête provient d'un écran ou d'un mobile
+        $isEcran = array_search("ecran", $this->_request->getParams());
         
-//        if (!is_null($leQuizz)) {
-//            $dateDebut = new Zend_Date( $leQuizz->dateDebut ,'dd/MM/yyyy HH:mm:ss' );
-//            if ($dateDebut->addSecond(self::)->compare(Zend_Date::now())<0){
-//                $this->view->dateDebut = $dateDebut;
-//                $this->view->message = "quizz expiré";
-//                $this->terminerQuizz($leQuizz->idQuizz);
-//                return;
-//            }
-//                    
-//        }
-
-//        $this->view->test = $this->estActif($leQuizz)->toString('dd/MM/yyyy HH:mm:ss');
-//        $this->view->test1 = $this->estActif($leQuizz)->addSecond(self::DUREE_QUESTION)->toString('dd/MM/yyyy HH:mm:ss');
-//        $this->view->test2 =  Zend_Date::now()->toString('dd/MM/yyyy HH:mm:ss');
-//        $this->view->test3 = $this->estActif($leQuizz)->addSecond(self::DUREE_QUESTION)->compare(Zend_Date::now());
-//        return;
+                
+        //récupère le quizz en cours
+        $leQuizz = $this->getCurrentQuizzGare($tvs);
+       
         
         //Termine le quizz si celui ci est expiré
         if (!is_null($leQuizz) && !$this->estActif($leQuizz) ) {
@@ -79,7 +68,7 @@ class Api_QuestionController extends Zend_Controller_Action {
                 //Nettoye les quizz de la gare (dateDebut et dateFin à null)
                 $t->restartQuizzList($tvs);
                 //obtient ensuite le premier quizz
-                $leQuizz = $t->getNewQuizz($tvs)->current();//$this->getQuizzGare($tvs);
+                $leQuizz = $t->getNewQuizz($tvs)->current();
                 
             }
             else {
@@ -105,30 +94,69 @@ class Api_QuestionController extends Zend_Controller_Action {
         $this->view->question = $question;
         $this->view->sponsor = $leSponsor;
         $this->view->tvs = $tvs;
+        $this->view->idq = $leQuizz->idQuizz;
         
     }
     
+    /*
+     * Action pour prendre en compte la réponse d'un utilisateur
+     */
     public function repondreAction() {
         $tvs = $this->_request->getParam('TVS');
-        try {
-            $leQuizz = $this->getQuizzGare($tvs);
-        } catch (Exception $exc) {
-            //echo $exc->getTraceAsString();
+        $idQuizzReponse = $this->_request->getParam('idq');
+        
+        //récupérer le quizz de l'ID
+        $t = new Application_Model_DbTable_Quizz();
+        $quizz = $t->fetchRow($t->select()->where('idQuizz = ?', $idQuizzReponse));
+        
+        //récupérer la gare de TVS
+        $tGare = new Application_Model_DbTable_Gare();
+        $gare = $tGare->fetchRow($tGare->select()->where('tvs = ?', $tvs));
+        
+        //$this->view->test = $quizz->findParentRow("Application_Model_DbTable_Gare")->tvs;
+        
+        if ($quizz->idGare != $gare->idGare) {
+            $this->_response->setHttpResponseCode(400);
+            $this->view->message = "Cette gare ne possède pas ce quizz";
+            return; 
+        }
+        
+        $leQuizzGare = $this->getCurrentQuizzGare($tvs);
+        
+        if (is_null($leQuizzGare)) {    
             $this->_response->setHttpResponseCode (400);
+            $this->view->message = "Il n'y a pas de quizz actuellement dans cette gare.";
             return;
         }
-
         
-        $bienRepondu = false;
-        //récupérer les params :
-        //  - l'ID question
-        //  - le num réponse
-        $laReponse = $this->_request->getParam('reponse',"");
-        $bonneReponse = $leQuizz->reponse;
-        if ($laReponse == $bonneReponse) {
-            $bienRepondu = true;
-            $this->terminerQuizz($leQuizz->idQuizz);
+        if ($leQuizzGare->idQuizz != $idQuizzReponse) {
+            $this->_response->setHttpResponseCode(400);
+            $this->view->message = "Ce quizz n'est plus actif";
+            return; 
         }
+        
+        if (!$this->estActif($leQuizzGare)) {
+            $this->_response->setHttpResponseCode(400);
+            $this->view->message = "Trop tard ! Ce quizz est terminé";
+            return; 
+        }
+        
+        //vérification de la réponse
+        $bienRepondu = false;
+        $laReponse = $this->_request->getParam('reponse',"");
+        $bonneReponse = $leQuizzGare->reponse;
+        if ($laReponse == $bonneReponse) {
+            //bonne réponse !!
+            $bienRepondu = true;
+            //est-ce la première bonne réponse
+            if ( is_null($leQuizzGare->idParticipant) ) {
+                $quizz->idParticipant = 1;//TODO le vainqueur n'est pas statique !!
+            }
+            $this->terminerQuizz($leQuizzGare->idQuizz,$bienRepondu);
+        }
+        
+        $this->view->quizz= $leQuizzGare->toArray();
+        
         $this->view->reponseOK = $bienRepondu;
         $this->view->solution = $bonneReponse;
         
@@ -137,46 +165,10 @@ class Api_QuestionController extends Zend_Controller_Action {
     }
 
     
+    
     /*
-     * Action pour démarrer un nouveau quizz
+     * indique si l'objet quizz est actif en prenant en compte la durée de la question
      */
-    public function demarrerAction() {
-        //TODO :
-        //  - s'assurer qu'un quizz n'est pas déjà en cours
-        $tvs = $this->_request->getParam('TVS');
-        $leQuizz = $this->getQuizzGare($tvs);
-        if (!is_null($leQuizz)) {
-            //echo $exc->getTraceAsString();
-            $this->_response->setHttpResponseCode (400);
-            $this->message = "Un quizz est déjà en cours";
-            return;
-        }
-        //  - récupérer le prochain quizz dans la liste
-        $t = new Application_Model_DbTable_Quizz();
-        $nouveauQuizz = $t->getNewQuizz($tvs)->current();
-        //$this->view->newQuizz = $nouveauQuizz->toArray();
-        
-        //  - si il n'y a pas de nouveauQuizz, alors lancer un nettoyage de la table
-        //      (supprimer les datesDebut et dateFin pour tous les quizz de la gare)
-        if (is_null($nouveauQuizz)) {
-            //TODO
-            $this->_response->setHttpResponseCode(500);
-            $this->view->message = "Not implemented !";
-            return;
-        }
-        //  - positionner la dateDebut
-        $quizz = $t->fetchRow($t->select()->where('idQuizz = ?', $nouveauQuizz->idQuizz));
-        $quizz->dateDebut = Zend_Date::now()->toString('yyyy-MM-dd HH:mm:ss');
-        $quizz->save();
-        
-        // récupère la question en cours
-        $question =  $this->getQuestion($nouveauQuizz);
-        
-        $this->view->question = $question;
-        $leSponsor = $this->getSponsor($nouveauQuizz);
-        $this->view->sponsor = $leSponsor;
-        $this->view->tvs = $tvs;
-    }
     public static function estActif($leQuizz) {
         $dateDebut = new Zend_Date( $leQuizz->dateDebut );//,'dd/MM/yyyy HH:mm:ss' );
         if ($dateDebut->addSecond(self::DUREE_QUESTION)->compare(Zend_Date::now())<0){
@@ -186,10 +178,15 @@ class Api_QuestionController extends Zend_Controller_Action {
             return true;
         }
     }
-    public static function getQuizzGare($tvs) {
+    
+    
+    /*
+     * Obtient l'objet quizz en cours (date début sans date fin)
+     */
+    public static function getCurrentQuizzGare($tvs) {
         
         $tableQuizz = new Application_Model_DbTable_Quizz();
-        $quizzRowset = $tableQuizz->getQuizz($tvs);
+        $quizzRowset = $tableQuizz->getCurrentQuizz($tvs);
         if ($quizzRowset->count()<1) {
             return null;
         }
@@ -197,24 +194,31 @@ class Api_QuestionController extends Zend_Controller_Action {
         return $leQuizz;
     }
 
-    public static function terminerQuizz($idQuizz) {
+    /*
+     * configure le quizz (id) avec la date de fin
+     */
+    public static function terminerQuizz($idQuizz,$estRepondu = false) {
         //TODO : insérer la date 
         $t = new Application_Model_DbTable_Quizz();
         $quizz = $t->fetchRow($t->select()->where('idQuizz = ?', $idQuizz));
         $quizz->dateFin = Zend_Date::now()->toString('yyyy-MM-dd HH:mm:ss');
+        $quizz->estRepondu = $estRepondu;
         $quizz->save();
     }
     
+    /*
+     * configure le quizz (id) avec la date début 
+     */
     public static function demarrerQuizz($idQuizz) {
         $t = new Application_Model_DbTable_Quizz();
         $quizz = $t->fetchRow($t->select()->where('idQuizz = ?', $idQuizz));
         $quizz->dateDebut = Zend_Date::now()->toString('yyyy-MM-dd HH:mm:ss');
         $quizz->save();
     }
-    public static function getSolution() {
-        return "Orchies";
-    }
     
+    /*
+     * Prépare la question de l'objet quizz pour affichage
+     */
     public static function getQuestion($leQuizz) {
         //TODO $idGare;
         $propositions = array( $leQuizz->reponse, $leQuizz->erreur1, $leQuizz->erreur2,$leQuizz->erreur3 );
@@ -228,6 +232,9 @@ class Api_QuestionController extends Zend_Controller_Action {
             );
     }
 
+    /*
+     * prépare le sponsor de l'objet quizz pour affichage
+     */
     public static function getSponsor($leQuizz) {
         return array (
                 'nom' => $leQuizz->nomPartenaire,
@@ -239,7 +246,14 @@ class Api_QuestionController extends Zend_Controller_Action {
             );
     }
 
+    
+    
     public static function getIdGare() {
         return "LEW";
     }
+    
+    public static function getSolution($leQuizz) {
+        return $leQuizz->reponse;
+    }
+    
 }
