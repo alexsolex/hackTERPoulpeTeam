@@ -35,7 +35,8 @@ class Application_Model_DbTable_Quizz extends Zend_Db_Table_Abstract
             'refColumns'        => 'idQuestion'
         ));
 
-    public function getQuizz($tvs) 
+    
+    public function getCurrentQuizz($tvs) 
     {
 //        select 
 //	qz.*,qst.*,g.*
