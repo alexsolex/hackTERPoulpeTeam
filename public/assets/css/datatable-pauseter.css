@@ -94,3 +94,9 @@ body{
 #textInfo span{
     color:blue;
 }
+
+#Erreur{
+    color:white;
+    background-color: red;
+    text-align: center;
+}

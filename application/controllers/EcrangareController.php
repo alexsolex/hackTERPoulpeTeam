@@ -15,7 +15,9 @@ class EcrangareController extends Zend_Controller_Action
             $this->soapClient->setSoapVersion(SOAP_1_1);
             
         } catch (SoapFault $ex) {
-                 echo 'C\'est la merde mec<br>' + $ex->getMessage();
+                 echo '<div id="Erreur">Vérifiez votre connexion internet !</div>';
+        }catch (Exception $ex) {
+            echo '<div id="Erreur">Vérifiez votre connexion internet !</div>';
         }
        
         //Context : on le force en json
@@ -43,8 +45,7 @@ class EcrangareController extends Zend_Controller_Action
            $this->view->info = $result;
 //           $this->view->info = $result->page;
         } catch (SoapFault $ex) {
-
-                echo $ex->getMessage();
+                echo '<div id="Erreur">Vérifiez votre connexion internet !</div>';
         }
   
     }
@@ -227,20 +228,29 @@ class EcrangareController extends Zend_Controller_Action
         return $tabLogoType;
     }
     public function departsAction() {
-        $soapResults = $this->departs('LEW');
+        try{
+             $soapResults = $this->departs('LEW');
         $retour = array();
         foreach ($soapResults->train as $train) {
             $tabLogoType = $this->logoEtType($train->picto, $train->type);
+            $date = new Zend_Date($train->heure);
+            $date = $date->addHour(1);//substr($train->heure,11,5)
             $retour[] = array(
                 $tabLogoType['logo'], //"logo",
                 $tabLogoType['type'],//      "transporteur",
                 $train->num, //      "numéro de train",
-                substr($train->heure,11,5),//      "heure depart",
+                $date->toString("HH:mm"),//      "heure depart",
                 $train->origdest,//      "destination",
                 $this->retard($train->trainTypeChoice),//      "information",
                 $train->voie//      "voie"
                 );
         }
+        } catch (SoapFault $ex) {
+                echo '<div id="Erreur">Vérifiez votre connexion internet !</div>';
+        }catch (Exception $ex) {
+            echo '<div id="Erreur">Vérifiez votre connexion internet !</div>';
+        }
+       
         
         $this->view->aaData = $retour;
     }
@@ -269,8 +279,9 @@ class EcrangareController extends Zend_Controller_Action
            $result = $this->soapClient->getTableauTrainsDepart($codeGare);
           
         } catch (SoapFault $ex) {
-                
-                echo 'C\'est la merde mec<br>' + $ex->getMessage();
+                echo '<div id="Erreur">Vérifiez votre connexion internet !</div>';
+        }catch (Exception $ex2){
+             echo '<div id="Erreur">Vérifiez votre connexion internet !</div>';
         }
         return $result;
            
@@ -282,7 +293,7 @@ class EcrangareController extends Zend_Controller_Action
            //$result est le retour de l'appel au webservice
            //Idem que pour les departs
         } catch (SoapFault $ex) {
-                echo 'C\'est la merde mec<br>' + $ex->getMessage();
+                echo '<div id="Erreur">Vérifiez votre connexion internet !</div>';
         }
         return $result;
     }
