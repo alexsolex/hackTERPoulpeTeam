@@ -42,6 +42,16 @@ class TestController extends Zend_Controller_Action
 //        $t = new Application_Model_DbTable_Situer();
 //        $this->view->situer = $t->fetchAll()->toArray();
         
+        // exemple wikipedia
+        
+                //$fql_query_url = 'http://fr.wikipedia.org/w/api.php?format=json&action=query&titles=Orchies&prop=revisions&rvprop=content';
+        
+//
+//        $fql_query_result = file_get_contents($fql_query_url);
+//        $fql_query_obj = json_decode($fql_query_result, true);
+//        
+//        $this->view->json = $fql_query_obj;
+//    
         $ville = 'Lille';
 	
 	$queryUrl = 'http://api.openweathermap.org/data/2.5/weather?q=' . $ville . '&units=metric&lang=fr';
@@ -52,12 +62,7 @@ class TestController extends Zend_Controller_Action
         $this->view->result = $tabResult;
 
     }
-
-        $fql_query_result = file_get_contents($fql_query_url);
-        $fql_query_obj = json_decode($fql_query_result, true);
-        
-        $this->view->json = $fql_query_obj;
-    }
+    
 public function listerFacebook() {
 
         //requete FQL
