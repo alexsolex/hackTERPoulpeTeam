@@ -53,5 +53,16 @@ class TestController extends Zend_Controller_Action
 
     }
 
+        $fql_query_result = file_get_contents($fql_query_url);
+        $fql_query_obj = json_decode($fql_query_result, true);
+        
+        $this->view->json = $fql_query_obj;
+    }
+public function listerFacebook() {
+
+        //requete FQL
+        
+
+    }
 }
 
