@@ -12,6 +12,7 @@ class Api_UserController extends Zend_Controller_Action
         
         $contextSwitch = $this->_helper->contextSwitch();
         $contextSwitch->addActionContext('index', 'json')
+                      ->addActionContext('geolocalise', 'json')
                       
                       ->initContext();
     }
@@ -26,16 +27,62 @@ class Api_UserController extends Zend_Controller_Action
       
     }  
 
+    public function geolocaliseAction()
+    {
+        $latMobi = $this->_request->getParam("lat") ||
+                48.87079;
+        $longMobi = $this->_request->getParam("long") ||
+                2.31689;
+        
+        $tableGare = new Application_Model_DbTable_Gare();
+        $lesGares = $tableGare->fetchAll();
+        $geo = new calculGeoloc();
+        $entreeVide = true;
+        $gareLaPlusProche = null;
+        $distanceLaPlusCourte = 0;
+        
+        foreach ($lesGares as $gareRow)
+        {
+            $xGare = $gareRow['Xcoord'];
+            $yGare = $gareRow['Ycoord'];
+            
+            $coordsGare = $geo->getLambert93VersWGS84($xGare, $yGare);           
+
+            $dist = $geo->getDistance(
+                    $latMobi, 
+                    $longMobi, 
+                    $xGare, 
+                    $yGare);
+            
+            if ($entreeVide ||
+                $dist < $distanceLaPlusCourte) {
+                $entreeVide = false;
+                $gareLaPlusProche = $gareRow;
+                $distanceLaPlusCourte = $dist;
+            }
+        }
+        
+        if (!is_null($gareLaPlusProche)) {
+            $this->view->gare = $gareLaPlusProche['tvs'];
+        }
+        else
+        {
+            $this->view->gare = -1;
+        }
+    }
+    
+}
+class calculGeoloc {
     /*
      * lambert 93 vers nos coords 
      */
-    public static function getLambert93VersWGS84($x, $y)
+    public function getLambert93VersWGS84($x, $y)
     {
-        return $this->Lambert2WGS84("L93", $x, $y);
+        return $this->Lambert2WGS84("LIIe", $x, $y);
     }
 
     
-    function getDistance($latitude1, $longitude1, $latitude2, $longitude2) {  
+    public  function getDistance($latitude1, $longitude1, $latitude2, $longitude2) {  
         $earth_radius = 6371;  
 
         $dLat = deg2rad($latitude2 - $latitude1);  
@@ -90,7 +137,7 @@ class Api_UserController extends Zend_Controller_Action
             return $coords;
     }
 
-    private function ALG0009($lambda,$phi,$he,$a,$e)
+    private  function ALG0009($lambda,$phi,$he,$a,$e)
     {
             $N = $this->ALG0021($phi,$a,$e);
 
@@ -279,8 +326,8 @@ class Api_UserController extends Zend_Controller_Action
             $Z = $coords['Z'];
             $coords = $this->ALG0012($X,$Y,$Z,$a,$e,$epsilon);
 
-            $coords['lambda']=rad2deg($coords['lambda']);
-            $coords['phi']   =rad2deg($coords['phi']);
+            $coords['longitude']=rad2deg($coords['lambda']);
+            $coords['latitude']   =rad2deg($coords['phi']);
             return $coords;
     }
 }
