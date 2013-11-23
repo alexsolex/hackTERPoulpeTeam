@@ -9,9 +9,6 @@ class Mobi_UserController extends Zend_Controller_Action
     {
      $contextSwitch = $this->_helper->contextSwitch();
         $contextSwitch->addActionContext('connect', 'json')
-                      
-                
-                      
                       ->initContext();
             
     }
@@ -110,7 +107,6 @@ class Mobi_UserController extends Zend_Controller_Action
     
     public function connectAction()
     {
-        
         $auth = TBS_Auth::getInstance();
         if (!$auth->hasIdentity()) {
             $this->view->message  = "non connecté";

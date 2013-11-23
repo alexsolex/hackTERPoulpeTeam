@@ -33,7 +33,7 @@ function rafraichir(){
              "dataType":"json",
              "contentType":"application/json; charset=utf-8",
              "type":"POST",
-             "url": BASE_URL + "/api/question/obtenir/TVS/LEW",
+             "url": BASE_URL + "/api/question/obtenir/TVS/LLF",
              "success": function(data){
                  var text = data['question']['question'];
                  text = (text.length > 250)? text.substr(0,250) + '...':text;
