@@ -29,10 +29,9 @@ class Api_UserController extends Zend_Controller_Action
 
     public function geolocaliseAction()
     {
-        $latMobi = $this->_request->getParam("lat") ||
-                48.87079;
-        $longMobi = $this->_request->getParam("long") ||
-                2.31689;
+        $latMobi = $this->_request->getParam("lat");//  || 48.87079;
+        $longMobi = $this->_request->getParam("long");// || 2.31689;
+
         
         $tableGare = new Application_Model_DbTable_Gare();
         $lesGares = $tableGare->fetchAll();
@@ -45,30 +44,36 @@ class Api_UserController extends Zend_Controller_Action
         {
             $xGare = $gareRow['Xcoord'];
             $yGare = $gareRow['Ycoord'];
-            
-            $coordsGare = $geo->getLambert93VersWGS84($xGare, $yGare);           
+            try {
+                $coordsGare = $geo->getLambert93VersWGS84($xGare, $yGare);           
 
-            $dist = $geo->getDistance(
-                    $latMobi, 
-                    $longMobi, 
-                    $xGare, 
-                    $yGare);
-            
-            if ($entreeVide ||
-                $dist < $distanceLaPlusCourte) {
-                $entreeVide = false;
-                $gareLaPlusProche = $gareRow;
-                $distanceLaPlusCourte = $dist;
+                $dist = $geo->getDistance(
+                        $latMobi, 
+                        $longMobi, 
+                        $coordsGare["latitude"], 
+                        $coordsGare["longitude"]);
+
+                if ($entreeVide ||
+                    $dist < $distanceLaPlusCourte) {
+                    $entreeVide = false;
+                    $gareLaPlusProche = $gareRow;
+                    $distanceLaPlusCourte = $dist;
+                }
+            } catch (Exception $exc) {
+                echo $exc->getTraceAsString();
             }
+
+            
         }
         
         if (!is_null($gareLaPlusProche)) {
-            $this->view->gare = $gareLaPlusProche['tvs'];
+            $this->view->gare = $gareLaPlusProche->toArray();
         }
         else
         {
             $this->view->gare = -1;
         }
+        $this->view->distance = $distanceLaPlusCourte;
     }
     
 }

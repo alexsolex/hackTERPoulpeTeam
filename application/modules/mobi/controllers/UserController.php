@@ -85,25 +85,25 @@ class Mobi_UserController extends Zend_Controller_Action
 
     }
     
-    public static function manageConnexion($result) {
-        //Existe t'il un utilisateur avec ce provider ?
-        $tabParticipant = new Application_Model_DbTable_Participant();
-        $leParticipant = $tabParticipant->fetchRow(
-                $tabParticipant->select()
-                    ->where("tw = ?",$result->getIdentity("twitter")->getId())
-                    ->orWhere("google = ?",$result->getIdentity("google")->getId())
-                    ->orWhere("fb = ?",$result->getIdentity("facebook")->getId())
-                );
-        if (is_null($leParticipant)) {
-            //pas de participant avec ce réseau social, on le créé
-            $data = array(
-                $field=>$result->getIdentity($field)->getId(),
-                "pseudo"=>$pseudoField
-                    );
-            $leParticipant = $tabParticipant->createRow($data);
-            $leParticipant->save();
-        }
-    }
+//    public static function manageConnexion($result) {
+//        //Existe t'il un utilisateur avec ce provider ?
+//        $tabParticipant = new Application_Model_DbTable_Participant();
+//        $leParticipant = $tabParticipant->fetchRow(
+//                $tabParticipant->select()
+//                    ->where("tw = ?",$result->getIdentity("twitter")->getId())
+//                    ->orWhere("google = ?",$result->getIdentity("google")->getId())
+//                    ->orWhere("fb = ?",$result->getIdentity("facebook")->getId())
+//                );
+//        if (is_null($leParticipant)) {
+//            //pas de participant avec ce réseau social, on le créé
+//            $data = array(
+//                $field=>$result->getIdentity($field)->getId(),
+//                "pseudo"=>$pseudoField
+//                    );
+//            $leParticipant = $tabParticipant->createRow($data);
+//            $leParticipant->save();
+//        }
+//    }
     
     public function connectAction()
     {
@@ -161,6 +161,11 @@ class Mobi_UserController extends Zend_Controller_Action
         }
         $this->view->participant = $leParticipant->toArray();
 
+        //La connection est terminée ( TODO restester )
+        
+        // maintenant on va servir les infos à la vue client question
+        // 
+        
     }
     
      public function logoutAction()
