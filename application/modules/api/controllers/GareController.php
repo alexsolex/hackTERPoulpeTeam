@@ -20,7 +20,8 @@ class Api_GareController extends Zend_Controller_Action {
     public function listerAction() {
         $tableGare = new Application_Model_DbTable_Gare();
         $recherche = $this->_request->getParam("q");
-        $this->view->lesGares = $tableGare->fetchAll($tableGare->Select()->where("libelle LIKE '%'"))->toArray();
+        
+        $this->view->lesGares = $tableGare->fetchAll($tableGare->Select()->where("libelle LIKE '%?'"))->toArray();
     }
 
     
