@@ -3,9 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/wamp/www/hackTERPoulpeTeam/public/index.php</file>
             <file>file:/C:/wamp/www/hackTERPoulpeTeam/application/controllers/EcrangareController.php</file>
             <file>file:/C:/wamp/www/hackTERPoulpeTeam/application/views/scripts/ecrangare/index.phtml</file>
+            <file>file:/C:/wamp/www/hackTERPoulpeTeam/application/modules/api/controllers/UserController.php</file>
             <file>file:/C:/wamp/www/hackTERPoulpeTeam/public/assets/css/datatable-pauseter.css</file>
+            <file>file:/C:/wamp/www/hackTERPoulpeTeam/public/assets/js/ecran.js</file>
+            <file>file:/C:/wamp/www/hackTERPoulpeTeam/application/views/scripts/index/index.phtml</file>
+            <file>file:/C:/wamp/www/hackTERPoulpeTeam/application/controllers/TestController.php</file>
         </group>
     </open-files>
 </project-private>

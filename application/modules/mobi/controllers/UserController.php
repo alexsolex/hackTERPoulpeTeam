@@ -166,6 +166,9 @@ class Mobi_UserController extends Zend_Controller_Action
         // maintenant on va servir les infos à la vue client question
         // 
         
+        //la page quizz/index
+        $this->_redirect('/mobi/quizz/index');
+        
     }
     
      public function logoutAction()
