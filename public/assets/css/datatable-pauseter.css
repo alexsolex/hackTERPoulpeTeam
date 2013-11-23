@@ -58,7 +58,7 @@ body{
 /*CSS POUR LE BLOCK QUESTION*/
 #dialog-question{
     position: absolute;
-    max-height: 300px;
+
     top: 370px;
     margin-left: 5%;
     margin-right: 5%;
@@ -77,11 +77,11 @@ body{
 }
 #logo{
     position:relative;
-    top:-200px;
-    margin-left: 50px;
+    top:-50px;
+    margin-right: 50px;
     float: right;
-    width:100px;
-    height:100px;
+    width:150px;
+    height:150px;
     margin-top: -150px;
 }
 #textQuestion{
@@ -102,7 +102,9 @@ body{
 #textInfo span{
     color:blue;
 }
-
+#blockQuestion{
+    margin-top: -100px;
+}
 #Erreur{
     color:white;
     background-color: red;

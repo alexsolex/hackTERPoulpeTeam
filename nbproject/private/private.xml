@@ -3,14 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/pauseter/library/TBS/Auth/Storage/MultipleIdentities.php</file>
-            <file>file:/C:/pauseter/application/modules/api/controllers/QuestionController.php</file>
-            <file>file:/C:/pauseter/application/modules/mobi/views/scripts/user/connect.phtml</file>
-            <file>file:/C:/pauseter/application/modules/mobi/controllers/UserController.php</file>
-            <file>file:/C:/pauseter/application/models/DbTable/Quizz.php</file>
-            <file>file:/C:/pauseter/library/TBS/Auth/Identity/Twitter.php</file>
-            <file>file:/C:/pauseter/docs/dump3.sql</file>
-            <file>file:/C:/pauseter/library/TBS/Auth.php</file>
+            <file>file:/C:/wamp/www/hackTERPoulpeTeam/application/controllers/EcrangareController.php</file>
+            <file>file:/C:/wamp/www/hackTERPoulpeTeam/application/views/scripts/ecrangare/index.phtml</file>
+            <file>file:/C:/wamp/www/hackTERPoulpeTeam/public/assets/css/datatable-pauseter.css</file>
         </group>
     </open-files>
 </project-private>

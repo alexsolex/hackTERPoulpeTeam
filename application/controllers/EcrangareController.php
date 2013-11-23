@@ -41,7 +41,7 @@ class EcrangareController extends Zend_Controller_Action
         //Si on a le temps sinon ça me semble pas super important
         //Un message et c'est tout
         try{
-           $result = $this->soapClient->getTableauInfos('LEW','1','20131119T00:00:00.000'); 
+           $result = $this->soapClient->getTableauInfos('LLF','1','20131119T00:00:00.000'); 
            $this->view->info = $result;
 //           $this->view->info = $result->page;
         } catch (SoapFault $ex) {
