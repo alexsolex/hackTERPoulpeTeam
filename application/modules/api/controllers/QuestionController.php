@@ -37,16 +37,16 @@ class Api_QuestionController extends Zend_Controller_Action {
         // récupère la gare de l'utilisateur
         //$idGare = $this->getIdGare();
         $tvs = $this->_request->getParam('TVS');
-        
+        $this->view->tvs = $tvs;
         // parametre 
         // TODO peut être : un paramètre pour indiquer si la requête provient d'un écran ou d'un mobile
         $isEcran = array_search("ecran", $this->_request->getParams());
+        
         
                 
         //récupère le quizz en cours
         $leQuizz = $this->getCurrentQuizzGare($tvs);
        
-        
         //Termine le quizz si celui ci est expiré
         if (!is_null($leQuizz) && !$this->estActif($leQuizz) ) {
             //$this->view->dateDebut = $dateDebut;
@@ -60,7 +60,7 @@ class Api_QuestionController extends Zend_Controller_Action {
             //  - récupérer le prochain quizz dans la liste
             $t = new Application_Model_DbTable_Quizz();
             $nouveauQuizz = $t->getNewQuizz($tvs)->current();
-            
+               
             
             //  - si il n'y a pas de nouveauQuizz, alors lancer un nettoyage de la table
             //      (supprimer les datesDebut et dateFin pour tous les quizz de la gare)
@@ -69,7 +69,7 @@ class Api_QuestionController extends Zend_Controller_Action {
                 $t->restartQuizzList($tvs);
                 //obtient ensuite le premier quizz
                 $leQuizz = $t->getNewQuizz($tvs)->current();
-                
+                $this->view->test = $leQuizz->idQuizz;
             }
             else {
                 $leQuizz = $nouveauQuizz;
@@ -77,7 +77,10 @@ class Api_QuestionController extends Zend_Controller_Action {
             
             $leQuizz->dateDebut = Zend_Date::now()->toString('yyyy-MM-dd HH:mm:ss');
             
+
+            
             $this->demarrerQuizz($leQuizz->idQuizz);
+            
             
         }
 
