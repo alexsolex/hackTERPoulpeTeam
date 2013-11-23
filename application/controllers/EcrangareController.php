@@ -229,7 +229,7 @@ class EcrangareController extends Zend_Controller_Action
     }
     public function departsAction() {
         try{
-             $soapResults = $this->departs('LEW');
+             $soapResults = $this->departs('LLF');
         $retour = array();
         foreach ($soapResults->train as $train) {
             $tabLogoType = $this->logoEtType($train->picto, $train->type);
@@ -255,7 +255,7 @@ class EcrangareController extends Zend_Controller_Action
         $this->view->aaData = $retour;
     }
         public function arriveesAction() {
-        $soapResults = $this->arrivees('LEW');
+        $soapResults = $this->arrivees('LLF');
         $retour = array();
         foreach ($soapResults->train as $train) {
             $tabLogoType = $this->logoEtType($train->picto, $train->type);
