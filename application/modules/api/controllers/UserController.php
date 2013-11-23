@@ -29,21 +29,46 @@ class Api_UserController extends Zend_Controller_Action
 
     public function geolocaliseAction()
     {
-        $latMobi = $this->_request->getParam("lat");
-        $longMobi = $this->_request->getParam("long");
+        $latMobi = $this->_request->getParam("lat") ||
+                48.87079;
+        $longMobi = $this->_request->getParam("long") ||
+                2.31689;
+        
         $tableGare = new Application_Model_DbTable_Gare();
         $lesGares = $tableGare->fetchAll();
-        
-        
-        //
-        $xGare = 601349;
-        $yGare = 2431315;
         $geo = new calculGeoloc();
-        $coordsGare = $geo->getLambert93VersWGS84($xGare, $yGare);
-        $this->view->coords = $coordsGare;
+        $entreeVide = true;
+        $gareLaPlusProche = null;
+        $distanceLaPlusCourte = 0;
         
-        $dist = $geo->getDistance(48.87079, 2.31689, 45.767, 4.833);
-        $this->view->dist = $dist;
+        foreach ($lesGares as $gareRow)
+        {
+            $xGare = $gareRow['Xcoord'];
+            $yGare = $gareRow['Ycoord'];
+            
+            $coordsGare = $geo->getLambert93VersWGS84($xGare, $yGare);           
+
+            $dist = $geo->getDistance(
+                    $latMobi, 
+                    $longMobi, 
+                    $xGare, 
+                    $yGare);
+            
+            if ($entreeVide ||
+                $dist < $distanceLaPlusCourte) {
+                $entreeVide = false;
+                $gareLaPlusProche = $gareRow;
+                $distanceLaPlusCourte = $dist;
+            }
+        }
+        
+        if (!is_null($gareLaPlusProche)) {
+            $this->view->gare = $gareLaPlusProche['tvs'];
+        }
+        else
+        {
+            $this->view->gare = -1;
+        }
     }
     
 }
