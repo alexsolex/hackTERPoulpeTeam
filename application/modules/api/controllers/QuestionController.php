@@ -27,7 +27,7 @@ class Api_QuestionController extends Zend_Controller_Action {
             $this->view->message("non connecté");
             return;
         }
-        $this->view->providers = $auth->getIdentity()->toArray();
+        $this->view->providers = $auth->getIdentity('twitter')->getProfile()->toArray();//attention
     }
     
     /*
