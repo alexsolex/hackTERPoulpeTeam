@@ -54,7 +54,7 @@ body {
 }
 
 /* page quizz */
-#gagne, #recompense, #partages-sociaux, .badges{
+#gagne, #recompense, #partages-sociaux, #perdu, .badges{
     display : none;
 }
 

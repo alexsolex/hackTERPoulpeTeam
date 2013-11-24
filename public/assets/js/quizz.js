@@ -66,6 +66,7 @@ function jsonToView(data) {
     $('#reponse2').text(data.question.choix2);
     $('#reponse3').text(data.question.choix3);
     $('#reponse4').text(data.question.choix4);
+    $('.img-partenaire').attr('src', BASE_URL + '/assets/img/partenaires/' + data.sponsor.logo);
     idQuestion = data.idq;
 }
 
@@ -87,14 +88,17 @@ function reponseEnvoyee(data, textStatus, jqXHR) {
         $('.question')
                 .css('display', 'none')
                 .parent();
-        $('#gagne').css('display', 'block');
+        
         $('#logo-partenaire').css('display', 'none');
-        $('.badges').fadeIn().delay(2000).fadeOut(400, function() {
-            $('#recompense').fadeIn();
-            $("#partages-sociaux").fadeIn()
-                    ;
-        });
+        $('#gagne').css('display', 'block');
+        $('.badges').fadeIn();
 
+    } else {
+        $('.question').css('display', 'none');
+        $('#perdu').css('display', 'block');
+        $('#logo-partenaire').css('display', 'none');
+        
+        
     }
 }
 
