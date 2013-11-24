@@ -63,40 +63,74 @@ class TestController extends Zend_Controller_Action
 
         
 	//Recherche des villes, régions...en fonction des coordonnées
-	$queryUrl = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=50.650,3.083&sensor=true';
+//	$queryUrl = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=50.650,3.083&sensor=true';
 	
-	$result = file_get_contents($queryUrl);
-	$tabResult = json_decode($result, true);
+//	$result = file_get_contents($queryUrl);
+//	$tabResult = json_decode($result, true);
         $geo = new calculGeoloc();
         $t = new Application_Model_DbTable_Gare();
-        $tableauGare = $t->fetchAll();
-        
+        $tableauGare = $t->fetchAll("codepost is null");
+       $i = 0;
         foreach ($tableauGare as $resRow ){
-            //modif des coordonnees
+//            sleep()
+////            modif des coordonnees
+            if($resRow->ville == ""){
             $xGare = $resRow['Xcoord'];
             $yGare = $resRow['Ycoord'];
-            
+//            $xGare = 532222;
+//            $yGare = 2029089;
+            if($xGare != null && $yGare != null){
             $coordsGare = $geo->getLambert93VersWGS84($xGare, $yGare);           
-  
-            $queryUrl = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' . $coordsGare["latitude"] . ',' 
-                        . $coordsGare["longitude"] .'&sensor=true';
+//            var_dump($coordsGare);
+            $queryUrl = 'http://nominatim.openstreetmap.org/reverse?format=json&lat=' . $coordsGare["latitude"] . '&lon=' . $coordsGare["longitude"] .'&zoom=18&addressdetails=1&sensor=true';
             $result = file_get_contents($queryUrl);
             $tabResult = json_decode($result, true);
-            
+//            print_r($tabResult) ;
+            $tab = $tabResult['address'];
             //Ajout des données dans la ligne de la table
-            $resRow->ville = $tabResult['results'];
+//            print_r($res) ;
+            
+             $resRow->ville = (isset($tab['city']))? $tab['city']: "";;
+             $resRow->region = (isset($tab['state']))? $tab['state']: "";;
+             $resRow->codepost = (isset($tab['postcode']))? $tab['postcode']: "";
+             $resRow->save(); 
+            }
+            }
             
         }
-        
+      
         
     }
     
-public function listerFacebook() {
-
-        //requete FQL
-        
-
+    public static function rechercherAdresse($tf, $typeRecherche)
+    {
+        if(isset($tf['address_components'])){
+            foreach ($tf['address_components'] as $address_component) {
+                if(isset($address_component["types"])){
+//                    var_dump($address_component);
+                  $types = $address_component["types"];
+                   
+                
+                    foreach ($types as $type) {
+                            if ($type == $typeRecherche) {
+                                return $types["long_name"];
+                            }
+                        }
+                    }
+                
+            }
+            
     }
+    return null;
+    }
+ 
+   
+//public function listerFacebook() {
+//
+//        //requete FQL
+//        
+//
+//    }
 }
 
 class calculGeoloc {
