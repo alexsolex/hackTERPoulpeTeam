@@ -7,7 +7,7 @@
                 </div>
             </div>
             <div class="row clearfix">
-                <div class="col-md-3 column quiz-logo">
+                <div class="col-md-3 column quiz-logo" id="logo-partenaire">
                     <img src="<?php echo $this->baseUrl() ?>/assets/img/partenaires/Starbucks.png" class="img-responsive center-block">
                 </div>
                 <div class="col-md-9 column">
@@ -22,19 +22,55 @@
 
             <div class="row clearfix question">
                 <div class="col-md-3 column reponse">
-                    <button type="button" class="btn btn-block bouton-reponse" id="reponse1"></button>
+                    <button type="button" class="btn-lg btn-block bouton-reponse" id="reponse1"></button>
                 </div>
                 <div class="col-md-3 column reponse">
-                    <button type="button" class="btn btn-block bouton-reponse" id="reponse2"></button>
+                    <button type="button" class="btn-lg btn-block bouton-reponse" id="reponse2"></button>
                 </div>
                 <div class="col-md-3 column reponse">
-                    <button type="button" class="btn btn-block bouton-reponse" id="reponse3"></button>
+                    <button type="button" class="btn-lg btn-block bouton-reponse" id="reponse3"></button>
                 </div>
                 <div class="col-md-3 column reponse">
-                    <button type="button" class="btn btn-block bouton-reponse" id="reponse4"></button>
+                    <button type="button" class="btn-lg btn-block bouton-reponse" id="reponse4"></button>
                 </div>
             </div>
 
+            <div class="row clearfix" id="gagne">
+                <div class="col-md-4 column badges">
+                    <img src="<?php echo $this->baseUrl() ?>/assets/img/badges/bonne-reponse.png" class="img-responsive center-block">
+                    <p>Vous avez donné la bonne réponse!<p>
+                </div>
+                <div class="col-md-4 column badges">
+                    <img src="<?php echo $this->baseUrl() ?>/assets/img/badges/tgv.png" class="img-responsive center-block">
+                    <p>Vous avez été le plus rapide<p>
+                </div>
+                <div class="col-md-4 column badges">
+                    <img src="<?php echo $this->baseUrl() ?>/assets/img/badges/chef-de-gare.png" class="img-responsive center-block">
+                    <p>Vous êtes le meilleur joueur de Lille Flandres!<p>
+                </div>
+            </div>
+            <div class="row clearfix" id="recompense">
+                <div class="col-md-8 column">
+                    <img src="<?php echo $this->baseUrl() ?>/assets/img/partenaires/Starbucks.png" class="img-responsive center-block">
+                    <p>Notre partenaire Starpoulpes Coffee est heureux de vous offrir un café<p>
+                </div>
+                <div class="col-md-4 column">
+                    <img src="<?php echo $this->baseUrl() ?>/assets/img/qrcode/qrcode.png" class="img-responsive center-block img-rounded img-thumbnail">
+                </div>
+
+            </div>
+            <div class="row clearfix" id="partages-sociaux">
+                <div class="col-md-4 column reponse">
+                    <button type="button" class="btn-lg btn-block btn-info">Ventez vous sur Twitter!</button>
+                </div>
+                <div class="col-md-4 column reponse">
+                    <button type="button" class="btn-lg btn-block btn-info">Faites le fier sur Facebook</button>
+                </div>
+                <div class="col-md-4 column reponse">
+                    <button type="button" class="btn-lg btn-block btn-info">Ecoeurez vos amis sur Google+</button>
+                </div>
+                </div>
+            </div>
         </div>
 
     </div>

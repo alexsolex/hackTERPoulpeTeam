@@ -53,6 +53,11 @@ body {
     border: none;
 }
 
+/* page quizz */
+#gagne, #recompense, #partages-sociaux, .badges{
+    display : none;
+}
+
 /*.nav {
     color: black;
     text-shadow: none ;

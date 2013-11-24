@@ -1,4 +1,3 @@
-alert('test');
 
 /* 
  * To change this template, choose Tools | Templates
@@ -13,9 +12,7 @@ var idQuestion = -1;
 
 function echecGeo()
 {
-    alert('val stat !!');
     recupererGare(
-
             50.63654,
             3.070366
             );
@@ -23,7 +20,6 @@ function echecGeo()
 
 function reussiteGeo(position)
 {
-    alert('géo ok');
     recupererGare(
             position.coords.latitude,
             position.coords.longitude
@@ -73,31 +69,37 @@ function jsonToView(data) {
     idQuestion = data.idq;
 }
 
-function clickReponse(){
+function clickReponse() {
     var $item = $(this);
     var reponse = $item.text();
     chargerJSON(
-        urlApiReponse + 'TVS/' + TVS + '/idq/' + idQuestion + '/reponse/' + reponse,
-        {},
-        reponseEnvoyee,
-        erreurReponse
-        );
+            urlApiReponse + 'TVS/' + TVS + '/idq/' + idQuestion + '/reponse/' + reponse,
+            {},
+            reponseEnvoyee,
+            erreurReponse
+            );
     return false;
 }
 
-function reponseEnvoyee (data, textStatus, jqXHR){
+function reponseEnvoyee(data, textStatus, jqXHR) {
     var reponseOK = data.reponseOK;
     if (reponseOK) {
         $('.question')
                 .css('display', 'none')
-                .parent()
-                .text('bravo');
-        
+                .parent();
+        $('#gagne').css('display', 'block');
+        $('#logo-partenaire').css('display', 'none');
+        $('.badges').fadeIn().delay(2000).fadeOut(400, function() {
+            $('#recompense').fadeIn();
+            $("#partages-sociaux").fadeIn()
+                    ;
+        });
+
     }
 }
 
 function erreurReponse() {
-    
+
 }
 
 function getLocation()
@@ -110,7 +112,7 @@ function getLocation()
 //    }
 //    else
 //    {
-        echecGeo();
+    echecGeo();
 //    }
 }
 
