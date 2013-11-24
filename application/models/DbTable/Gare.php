@@ -23,6 +23,7 @@ class Application_Model_DbTable_Gare extends Zend_Db_Table_Abstract
                 ->from('gare','nomgare')
                 ->where('nomgare != ?',$nomGare)
                 ->where('region = "Nord-Pas-de-Calais"')
+                ->where('nomgare not in ("B","P")')
                 ->order("rand()")
                 ->limit(3);
         $result = $this->fetchAll($select);
