@@ -2,7 +2,8 @@
 
 class Api_QuestionController extends Zend_Controller_Action {
 
-    const DUREE_QUESTION = 60;//3minutes
+    const DUREE_VALIDITE_QUESTION = 60;
+    
     
     public function init() {
         //Context : on le force en json
@@ -174,7 +175,7 @@ class Api_QuestionController extends Zend_Controller_Action {
      */
     public static function estActif($leQuizz) {
         $dateDebut = new Zend_Date( $leQuizz->dateDebut );//,'dd/MM/yyyy HH:mm:ss' );
-        if ($dateDebut->addSecond(self::DUREE_QUESTION)->compare(Zend_Date::now())<0){
+        if ($dateDebut->addSecond(self::DUREE_VALIDITE_QUESTION)->compare(Zend_Date::now())<0){
             return false;
         }
         else {
