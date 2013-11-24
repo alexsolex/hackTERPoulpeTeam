@@ -121,4 +121,47 @@ class QuestionsController extends Zend_Controller_Action
                         }
 			
     }
+    
+    public function regulariteAction(){
+            
+                        $url = 'http://datasncf.opendatasoft.com/api/records/1.0/search/?dataChart=eyJ0aW1lc2NhbGUiOiIiLCJxdWVyaWVzIjpbeyJjb25maWciOnsiZGF0YXNldCI6InNuY2YtcmVndWxhcml0ZSIsIm9wdGlvbnMiOnsidGFiIjoiYW5hbHl6ZSJ9fSwieEF4aXMiOiJyZWdpb24iLCJzb3J0IjoiIiwibWF4cG9pbnRzIjo1MCwiY2hhcnRzIjpbeyJ5QXhpcyI6InJlZ3VsYXJpdGUiLCJ5TGFiZWwiOiJNb3llbm5lIFJlZ3VsYXJpdGUiLCJmdW5jIjoiQVZHIiwiY29sb3IiOiIjMmY3ZWQ4IiwidHlwZSI6ImNvbHVtbiIsImV4dHJhcyI6e319XX1dLCJ4TGFiZWwiOiJSZWdpb24ifQ%3D%3D&dataset=sncf-regularite&rows=20&start=140&tab=table';
+                        $fileData = file_get_contents(
+                                $url);
+                        $json = json_decode($fileData);
+                        
+                        if (isset($json->records)) {
+                            $records = $json->records;
+                            
+                            foreach ($records as $record) {
+                                $fields = $record->fields;
+                                $annee = $fields->annee;
+                                $mois = $fields->mois;
+                                $region = $fields->region;
+                                $regularite = intval($fields->regularite);
+                                
+                                if ($regularite < 70) {
+                                    continue;
+                                }
+                                
+                                $regFausse = $regularite - 50;
+                                $lesRegFausses = array();
+                                while (count($lesRegFausses) < 3) {
+                                    if ($regFausse > 100) {
+                                        $regFausse = $regFausse - 100;
+                                    }
+                                    if ($regFausse != $regularite) {
+                                        array_push($lesRegFausses, $regFausse);
+                                    }
+                                    $regFausse = $regFausse + 15;
+                                }
+                                
+                                $intitule = 'Quelle est la régularite des trains du ' .
+                                    $region .
+                                    ' pour ' .
+                                    $mois . ' ' .
+                                    $annee . ' ?';
+                            }
+                        }
+                    
+    }
 }
