@@ -9,6 +9,7 @@ var urlApiQuestion = BASE_URL + '/api/question/obtenir/TVS/';
 var urlApiReponse = BASE_URL + '/api/question/repondre/';
 var TVS = '';
 var idQuestion = -1;
+var texteGain ='';
 
 function echecGeo()
 {
@@ -82,15 +83,25 @@ function clickReponse() {
     return false;
 }
 
+function clickVoirGain() {
+    $('.badges').css('display', 'none');
+    $('#voir-gain').css('display', 'none');
+    $('#recompense').css('display', 'block');
+    $('#cadeau-partenaire').html(texteGain);
+    
+}
+
 function reponseEnvoyee(data, textStatus, jqXHR) {
     var reponseOK = data.reponseOK;
+    
     if (reponseOK) {
         $('.question')
                 .css('display', 'none')
                 .parent();
-        
+        texteGain = 'Bravo! vous avez gagné ' + data.quizz.libelleGain + '! </br>' + data.quizz.infoGain;
         $('#logo-partenaire').css('display', 'none');
         $('#gagne').css('display', 'block');
+        $('#voir-gain').css('display', 'block');
         $('.badges').fadeIn();
 
     } else {
@@ -167,5 +178,6 @@ function chargerJSON(url, data, ftSuccess, ftError) {
 }
 
 $('.bouton-reponse').click(clickReponse);
+$('#voir-gain').click(clickVoirGain);
 
 $(getLocation);
