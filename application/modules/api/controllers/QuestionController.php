@@ -226,7 +226,7 @@ class Api_QuestionController extends Zend_Controller_Action {
     public static function getQuestion($leQuizz) {
         //TODO $idGare;
         $propositions = array( $leQuizz->reponse, $leQuizz->erreur1, $leQuizz->erreur2,$leQuizz->erreur3 );
-        //shuffle($propositions);
+        shuffle($propositions);
         return array (
                 'question' => $leQuizz->libelleQuestion,//"Une commune française, située dans le département du Nord (59) en région Nord-Pas-de-Calais. Le nom jeté des habitants est les pourchots1, signifiant « porc » en picard.",
                 'choix1' => $propositions[0],//"GareA",

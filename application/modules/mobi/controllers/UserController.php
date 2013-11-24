@@ -20,7 +20,8 @@ class Mobi_UserController extends Zend_Controller_Action
         
     public function indexAction()
     {
-      
+        //la page d'index permet de proposer à l'utilisateur les boutons de connexion
+        
     }
 
    
@@ -174,7 +175,7 @@ class Mobi_UserController extends Zend_Controller_Action
      public function logoutAction()
     {
         TBS_Auth::getInstance()->clearIdentity();
-        $this->_redirect('/');
+        $this->_redirect('mobi/index/index');
     }
 
     public static function auth() {
