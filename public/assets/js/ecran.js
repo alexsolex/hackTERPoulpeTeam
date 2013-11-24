@@ -44,7 +44,7 @@ function rafraichir(){
           });
         
         callend();
-      }, 6000 );
+      }, 60000 );
     };
     
     function callend() {

@@ -2,7 +2,7 @@
 
 class Api_QuestionController extends Zend_Controller_Action {
 
-    const DUREE_VALIDITE_QUESTION = 60;
+    const DUREE_VALIDITE_QUESTION = 90;
     
     
     public function init() {
