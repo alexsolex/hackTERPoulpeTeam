@@ -15,5 +15,24 @@ class Application_Model_DbTable_Gare extends Zend_Db_Table_Abstract
         $select = $this->select()->where("tvs = ?",$tvs);
         return $this->fetchRow($select);
     }
-   
+    
+     
+    public function get3ByNomGare($nomGare) {
+        $select = $this->select()
+                ->from('gare','nomgare')
+                ->where('nomgare != ?',$nomGare);
+        $result = $this->fetchAll($select);
+        return $result;
+    }
+    public function get3ByCodePostal($codepostal) {
+        $select = $this->select()
+                ->from('gare','nom')
+                ->where('nomGare != ?',$nomGare);
+                
+                
+        $result = $this->fetchAll($select);
+        return $result;
+    }
+    
+  
 }
