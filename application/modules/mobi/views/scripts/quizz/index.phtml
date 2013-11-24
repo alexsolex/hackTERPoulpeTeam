@@ -7,8 +7,9 @@
                 </div>
             </div>
             <div class="row clearfix">
-                <div class="col-md-3 column quiz-logo">
-                    <img src="<?php echo $this->baseUrl() ?>/assets/img/partenaires/Starbucks.png" class="img-responsive center-block">
+                <div class="col-md-3 column quiz-logo" id="logo-partenaire">
+                    <img src="" class="img-responsive center-block img-partenaire">
+                   
                 </div>
                 <div class="col-md-9 column">
                     <p id="question" class="question">
@@ -22,21 +23,67 @@
 
             <div class="row clearfix question">
                 <div class="col-md-3 column reponse">
-                    <button type="button" class="btn btn-block bouton-reponse" id="reponse1"></button>
+                    <button type="button" class="btn-lg btn-block bouton-reponse" id="reponse1"></button>
                 </div>
                 <div class="col-md-3 column reponse">
-                    <button type="button" class="btn btn-block bouton-reponse" id="reponse2"></button>
+                    <button type="button" class="btn-lg btn-block bouton-reponse" id="reponse2"></button>
                 </div>
                 <div class="col-md-3 column reponse">
-                    <button type="button" class="btn btn-block bouton-reponse" id="reponse3"></button>
+                    <button type="button" class="btn-lg btn-block bouton-reponse" id="reponse3"></button>
                 </div>
                 <div class="col-md-3 column reponse">
-                    <button type="button" class="btn btn-block bouton-reponse" id="reponse4"></button>
+                    <button type="button" class="btn-lg btn-block bouton-reponse" id="reponse4"></button>
                 </div>
             </div>
 
-        </div>
+            <div class="row clearfix" id="gagne">
+                <div class="col-md-4 column badges">
+                    <img src="<?php echo $this->baseUrl() ?>/assets/img/badges/bonne-reponse.png" class="img-responsive center-block">
+                    <p>Vous avez donné la bonne réponse!<p>
+                </div>
+                <div class="col-md-4 column badges">
+                    <img src="<?php echo $this->baseUrl() ?>/assets/img/badges/tgv.png" class="img-responsive center-block">
+                    <p>Vous avez été le plus rapide<p>
+                </div>
+                <div class="col-md-4 column badges">
+                    <img src="<?php echo $this->baseUrl() ?>/assets/img/badges/chef-de-gare.png" class="img-responsive center-block">
+                    <p>Vous êtes le meilleur joueur de Lille Flandres!<p>
+                </div>
+            </div>
+            <div class="row clearfix" id="recompense">
+                <div class="col-md-8 column">
+                    <img src="" class="img-responsive center-block img-partenaire">
+                    <p id="cadeau-partenaire"><p>
+                </div>
+                <div class="col-md-4 column">
+                    <img src="<?php echo $this->baseUrl() ?>/assets/img/qrcode/qrcode.png" class="img-responsive center-block img-rounded img-thumbnail">
+                </div>
+            </div>
 
+            <div class="row clearfix" id="perdu">
+                <div class="col-md-12 column">
+                    <img src="<?php echo $this->baseUrl() ?>/assets/img/badges/patachon.png" class="img-responsive center-block">
+                    <p>Quelqu'un a été plus rapide que vous!</br>
+                    Ne ratez quand même pas votre train.<p>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row clearfix" id="partages-sociaux">
+            <div class="col-md-4 column reponse">
+                <a href="http://twitter.com/home?status=Yes!%20J'ai%20%C3%A9t%C3%A9%20premier%20au%20Quizz%20Pause'TER%20de%20Lille%20Flandres,%20j'ai%20gagn%C3%A9%20un%20caf%C3%A9%20Starpoulpe">Vantez vous sur Twitter!</a>
+            </div>
+            <div class="col-md-4 column reponse">
+                <a href="http://www.facebook.com/sharer/sharer.php?s=100&p[url]=www.ter-sncf.mobi&p[images][0]=&p[title]=J'ai%20gagn%C3%A9%20un%20caf%C3%A9%20Starpoulpe!&p[summary]=J'ai%20%C3%A9t%C3%A9%20le%20plus%20rapide%20au%20Quizz%20Pause'TER%20et%20je%20viens%20de%20gagner%20un%20caf%C3%A9%20Starpoulpe!">Faites le fier sur Facebook</a>
+            </div>
+            <div class="col-md-4 column reponse">
+                <a href="">Ecoeurez vos amis sur Google+</a>
+            </div>
+        </div>
     </div>
+</div>
+
+</div>
 </div>
 
