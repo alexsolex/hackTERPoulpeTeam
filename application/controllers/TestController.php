@@ -44,13 +44,22 @@ class TestController extends Zend_Controller_Action
         
         // exemple wikipedia
 //        
-//                $fql_query_url = 'http://fr.wikipedia.org/w/api.php?format=json&action=query&titles=Orchies&prop=revisions&rvprop=content';
-//        
-//
-//        $fql_query_result = file_get_contents($fql_query_url);
-//        $fql_query_obj = json_decode($fql_query_result, true);
-//        
-//        $this->view->json = $fql_query_obj;
+        
+        $t = new Application_Model_DbTable_Gare();
+        $tableauGare = $t->fetchAll();
+       $i = 0;
+        foreach ($tableauGare as $resRow ){
+//            sleep()
+////            modif des coordonnees
+            if($resRow->ville == ""){
+                $fql_query_url = 'http://fr.wikipedia.org/w/api.php?format=json&action=query&titles=' . $resRow->ville . '&prop=revisions&rvprop=content';
+                $fql_query_result = file_get_contents($fql_query_url);
+                $fql_query_obj = json_decode($fql_query_result, true);
+            
+            }
+            
+        }
+        $this->view->json = $fql_query_obj;
 //    
 //        $ville = 'Lille';
 //	
@@ -67,37 +76,40 @@ class TestController extends Zend_Controller_Action
 	
 //	$result = file_get_contents($queryUrl);
 //	$tabResult = json_decode($result, true);
-        $geo = new calculGeoloc();
-        $t = new Application_Model_DbTable_Gare();
-        $tableauGare = $t->fetchAll("codepost is null");
-       $i = 0;
-        foreach ($tableauGare as $resRow ){
-//            sleep()
-////            modif des coordonnees
-            if($resRow->ville == ""){
-            $xGare = $resRow['Xcoord'];
-            $yGare = $resRow['Ycoord'];
-//            $xGare = 532222;
-//            $yGare = 2029089;
-            if($xGare != null && $yGare != null){
-            $coordsGare = $geo->getLambert93VersWGS84($xGare, $yGare);           
-//            var_dump($coordsGare);
-            $queryUrl = 'http://nominatim.openstreetmap.org/reverse?format=json&lat=' . $coordsGare["latitude"] . '&lon=' . $coordsGare["longitude"] .'&zoom=18&addressdetails=1&sensor=true';
-            $result = file_get_contents($queryUrl);
-            $tabResult = json_decode($result, true);
-//            print_r($tabResult) ;
-            $tab = $tabResult['address'];
-            //Ajout des données dans la ligne de la table
-//            print_r($res) ;
-            
-             $resRow->ville = (isset($tab['city']))? $tab['city']: "";;
-             $resRow->region = (isset($tab['state']))? $tab['state']: "";;
-             $resRow->codepost = (isset($tab['postcode']))? $tab['postcode']: "";
-             $resRow->save(); 
-            }
-            }
-            
-        }
+        
+        
+        //INSERTION DES DONNEES VILLES,REGIONS,CODEPOST
+//        $geo = new calculGeoloc();
+//        $t = new Application_Model_DbTable_Gare();
+//        $tableauGare = $t->fetchAll("codepost is null");
+//       $i = 0;
+//        foreach ($tableauGare as $resRow ){
+////            sleep()
+//////            modif des coordonnees
+//            if($resRow->ville == ""){
+//            $xGare = $resRow['Xcoord'];
+//            $yGare = $resRow['Ycoord'];
+////            $xGare = 532222;
+////            $yGare = 2029089;
+//            if($xGare != null && $yGare != null){
+//            $coordsGare = $geo->getLambert93VersWGS84($xGare, $yGare);           
+////            var_dump($coordsGare);
+//            $queryUrl = 'http://nominatim.openstreetmap.org/reverse?format=json&lat=' . $coordsGare["latitude"] . '&lon=' . $coordsGare["longitude"] .'&zoom=18&addressdetails=1&sensor=true';
+//            $result = file_get_contents($queryUrl);
+//            $tabResult = json_decode($result, true);
+////            print_r($tabResult) ;
+//            $tab = $tabResult['address'];
+//            //Ajout des données dans la ligne de la table
+////            print_r($res) ;
+//            
+//             $resRow->ville = (isset($tab['city']))? $tab['city']: "";;
+//             $resRow->region = (isset($tab['state']))? $tab['state']: "";;
+//             $resRow->codepost = (isset($tab['postcode']))? $tab['postcode']: "";
+//             $resRow->save(); 
+//            }
+//            }
+//            
+//        }
       
         
     }
