@@ -60,15 +60,15 @@ class QuestionsController extends Zend_Controller_Action
             $libelle = preg_replace("/\[.*\]/","",$libelle);
             //$libelle = str_replace("\n", "<br/>", $libelle);
             $libelle = preg_replace("/\(.*\)/","",$libelle);
-            $mauvaisesReponses = $tableauGare;
-            $this->view->test = array_rand($mauvaisesReponses->toArray());
+            $mauvaisesReponses = $tGare->get3ByNomGare($g->nomgare)->toArray();
+            //$this->view->test = array_rand($mauvaisesReponses->toArray());
             $data = array(
                 "libelle" => $libelle ,
                 "reponse" =>$gare->nomgare,
                 "type" => "wikiextract",
-                "erreur1" => $mauvaisesReponses[array_rand($mauvaisesReponses->toArray())]->nomgare,
-                "erreur2" => $mauvaisesReponses[array_rand($mauvaisesReponses->toArray())]->nomgare,
-                "erreur3" => $mauvaisesReponses[array_rand($mauvaisesReponses->toArray())]->nomgare
+                "erreur1" => $mauvaisesReponses[0]["nomgare"],
+                "erreur2" => $mauvaisesReponses[1]["nomgare"],
+                "erreur3" => $mauvaisesReponses[2]["nomgare"]
             );
            $question = $tQuestion->createRow($data);
            $question->save();

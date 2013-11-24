@@ -19,8 +19,12 @@ class Application_Model_DbTable_Gare extends Zend_Db_Table_Abstract
      
     public function get3ByNomGare($nomGare) {
         $select = $this->select()
+                ->distinct()
                 ->from('gare','nomgare')
-                ->where('nomgare != ?',$nomGare);
+                ->where('nomgare != ?',$nomGare)
+                ->where('region = "Nord-Pas-de-Calais"')
+                ->order("rand()")
+                ->limit(3);
         $result = $this->fetchAll($select);
         return $result;
     }
