@@ -4,7 +4,7 @@
 html { 
     margin:0;
     padding:0;
-    background: url(../assets/img/backgrounds/3.jpg) no-repeat center fixed; 
+    background: url(../img/backgrounds/3.jpg) no-repeat center fixed; 
     -webkit-background-size: cover; /* pour Chrome et Safari */
     -moz-background-size: cover; /* pour Firefox */
     -o-background-size: cover; /* pour Opera */
