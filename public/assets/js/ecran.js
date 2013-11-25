@@ -65,7 +65,7 @@ $(document).ready(function(){
             "bProcessing": true,
             "bServerSide": true,
             "bStateSave": true,
-            "sAjaxSource": BASE_URL + "/ecrangare/departs?format=json",
+            "sAjaxSource": BASE_URL + "/ecrangare/departs?TVS=CMZ&format=json",
             "sServerMethod": "POST",
 
          

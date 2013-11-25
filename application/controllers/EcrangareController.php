@@ -46,7 +46,7 @@ class EcrangareController extends Zend_Controller_Action
         }
         
         try{
-           $result = $this->soapClient->getTableauInfos($TVS,'1','20131119T00:00:00.000'); 
+           $result = $this->soapClient->getTableauInfos('MLW','1','20131125T00:00:00.000'); 
            $this->view->info = $result;
 //           $this->view->info = $result->page;
         } catch (SoapFault $ex) {
@@ -232,9 +232,14 @@ class EcrangareController extends Zend_Controller_Action
         $tabLogoType = array('logo'=>$img, 'type'=>$typeBon);
         return $tabLogoType;
     }
+
     public function departsAction() {
+        $TVS = $this->_request->getParam("TVS");
+        if (is_null($TVS)) {
+            $TVS = "CMZ";
+        }
         try{
-             $soapResults = $this->departs('LLF');
+             $soapResults = $this->departs($TVS);
         $retour = array();
         foreach ($soapResults->train as $train) {
             $tabLogoType = $this->logoEtType($train->picto, $train->type);
@@ -259,8 +264,13 @@ class EcrangareController extends Zend_Controller_Action
         
         $this->view->aaData = $retour;
     }
-        public function arriveesAction() {
-        $soapResults = $this->arrivees('LLF');
+ 
+    public function arriveesAction() {
+        $TVS = $this->_request->getParam("TVS");
+        if (is_null($TVS)) {
+            $TVS = "XCZ";
+        }
+        $soapResults = $this->arrivees($TVS);
         $retour = array();
         foreach ($soapResults->train as $train) {
             $tabLogoType = $this->logoEtType($train->picto, $train->type);
@@ -294,7 +304,7 @@ class EcrangareController extends Zend_Controller_Action
     
     public function arrivees($codeGare){
         try{
-           $result = $this->soapClient->getTableauTrainsArrivee('LEW');
+           $result = $this->soapClient->getTableauTrainsArrivee($codeGare);
            //$result est le retour de l'appel au webservice
            //Idem que pour les departs
         } catch (SoapFault $ex) {
