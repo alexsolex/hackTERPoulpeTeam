@@ -40,8 +40,13 @@ class EcrangareController extends Zend_Controller_Action
         //Il faut voir si on veut avoir du dynamisme ici
         //Si on a le temps sinon ça me semble pas super important
         //Un message et c'est tout
+        $TVS = $this->_request->getParam("TVS");
+        if (is_null($TVS)) {
+            $TVS = "XCZ";
+        }
+        
         try{
-           $result = $this->soapClient->getTableauInfos('LLF','1','20131119T00:00:00.000'); 
+           $result = $this->soapClient->getTableauInfos($TVS,'1','20131119T00:00:00.000'); 
            $this->view->info = $result;
 //           $this->view->info = $result->page;
         } catch (SoapFault $ex) {
