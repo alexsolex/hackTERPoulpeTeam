@@ -3,8 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/pauseter/application/configs/application.ini</file>
-            <file>file:/C:/pauseter/application/configs/db.ini</file>
+            <file>file:/C:/pauseter/application/modules/api/controllers/UserController.php</file>
+            <file>file:/C:/pauseter/application/modules/api/controllers/QuestionController.php</file>
+            <file>file:/C:/pauseter/application/models/DbTable/Quizz.php</file>
+            <file>file:/C:/pauseter/application/controllers/IndexController.php</file>
+            <file>file:/C:/pauseter/application/modules/mobi/controllers/QuestionControllerBAK.php</file>
+            <file>file:/C:/pauseter/application/modules/mobi/controllers/IndexController.php</file>
+            <file>file:/C:/pauseter/public/assets/js/ecran.js</file>
+            <file>file:/C:/pauseter/public/.htaccess</file>
+            <file>file:/C:/pauseter/application/controllers/EcrangareController.php</file>
         </group>
     </open-files>
 </project-private>

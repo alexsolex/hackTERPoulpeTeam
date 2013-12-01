@@ -110,7 +110,7 @@ class Application_Model_DbTable_Quizz extends Zend_Db_Table_Abstract
         //récupérer l'idGare correspondant au TVS
         $tGare = new Application_Model_DbTable_Gare();
         $laGare = $tGare->getGareByTvs($tvs);
-        $idGare = 0;
+        $idGare = 397;
         if (!is_null($laGare)) {
             $idGare = $laGare->idGare;
         }
@@ -120,7 +120,7 @@ class Application_Model_DbTable_Quizz extends Zend_Db_Table_Abstract
         $select = $this->select()->from('quizz',array('idQuizz'))->where('idGare = ?',$idGare);
         $lesIdsQuizz = $this->fetchAll($select);
         
-        $lesIdsQuizz = array(1,2);
+        $lesIdsQuizz = $lesIdsQuizz->toArray();//array(1,2);
         //update les quizz
         $data = array('dateDebut' => null , 'dateFin' => null, 'idParticipant' => null ,'estRepondu' => false);
         $where = $this->getAdapter()->quoteInto('idQuizz IN (?)', $lesIdsQuizz);

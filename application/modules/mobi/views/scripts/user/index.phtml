@@ -9,15 +9,18 @@
             </div>
 
             <div class="row clearfix">
-                <div class="col-md-6 column reponse"><a href="<?php echo TBS_Auth_Adapter_Facebook::getAuthorizationUrl(); ?>" ><img src="<?php echo $this->baseUrl() ?>/assets/img/icones/fb.png" class="img-responsive center-block"></a>
+                <div class="col-md-6 column reponse"><a href="<?php echo $this->facebookAuthUrl; ?>" ><img src="<?php echo $this->baseUrl() ?>/assets/img/icones/fb.png" class="img-responsive center-block"></a>
                 </div>
-                <div class="col-md-6 column reponse"><a href="<?php echo TBS_Auth_Adapter_Twitter::getAuthorizationUrl();  ?>" ><img src="<?php echo $this->baseUrl() ?>/assets/img/icones/twitter.png" class="img-responsive center-block"></a>
+                <div class="col-md-6 column reponse"><a href="<?php echo $this->twitterAuthUrl;  ?>" ><img src="<?php echo $this->baseUrl() ?>/assets/img/icones/twitter.png" class="img-responsive center-block"></a>
                 </div>
             </div>
-            
+
             <div class="row clearfix">
-                <div class="col-md-12 column reponse">
+                <div class="col-md-6 column reponse">
                     <a href="<?php echo $this->url(array('module' => 'mobi', 'controller' => 'quizz', 'action' => 'index')); ?>" class="btn-link">Hackathon mode</a>
+                </div>
+                <div class="col-md-6 column reponse">
+                    <a href="<?php echo $this->url(array('module' => 'mobi', 'controller' => 'user', 'action' => 'logout')); ?>" class="btn-link">Logout</a>
                 </div>
             </div>
 

@@ -1,4 +1,4 @@
-<?php
+<?php //
 
 class Mobi_QuestionController extends Zend_Controller_Action {
 

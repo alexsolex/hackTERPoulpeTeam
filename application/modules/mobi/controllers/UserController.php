@@ -17,14 +17,30 @@ class Mobi_UserController extends Zend_Controller_Action
 
     }
     
-        
+    /*
+     * Affiche la vue d'accueil sur mobile
+     */    
     public function indexAction()
     {
         //la page d'index permet de proposer à l'utilisateur les boutons de connexion
+        $auth = TBS_Auth::getInstance();
+        if (!$auth->hasIdentity()) {
+            $this->view->message  = "non connecté";
+            $this->view->googleAuthUrl = TBS_Auth_Adapter_Google::getAuthorizationUrl();
+
+            $this->view->facebookAuthUrl = TBS_Auth_Adapter_Facebook::getAuthorizationUrl();
+
+            $this->view->twitterAuthUrl = TBS_Auth_Adapter_Twitter::getAuthorizationUrl();
+        }
+        else {
+            
+        }
         
     }
 
-   
+   /*
+    * Recoit la connexion depuis les réseaux sociaux
+    */
     public function loginAction()
     {
         
@@ -86,26 +102,9 @@ class Mobi_UserController extends Zend_Controller_Action
 
     }
     
-//    public static function manageConnexion($result) {
-//        //Existe t'il un utilisateur avec ce provider ?
-//        $tabParticipant = new Application_Model_DbTable_Participant();
-//        $leParticipant = $tabParticipant->fetchRow(
-//                $tabParticipant->select()
-//                    ->where("tw = ?",$result->getIdentity("twitter")->getId())
-//                    ->orWhere("google = ?",$result->getIdentity("google")->getId())
-//                    ->orWhere("fb = ?",$result->getIdentity("facebook")->getId())
-//                );
-//        if (is_null($leParticipant)) {
-//            //pas de participant avec ce réseau social, on le créé
-//            $data = array(
-//                $field=>$result->getIdentity($field)->getId(),
-//                "pseudo"=>$pseudoField
-//                    );
-//            $leParticipant = $tabParticipant->createRow($data);
-//            $leParticipant->save();
-//        }
-//    }
-    
+    /*
+     * Gère la connexion actuelle dans les réseaux sociaux
+     */
     public function connectAction()
     {
         $auth = TBS_Auth::getInstance();

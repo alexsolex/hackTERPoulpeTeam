@@ -2,7 +2,7 @@
 
 class Api_QuestionController extends Zend_Controller_Action {
 
-    const DUREE_VALIDITE_QUESTION = 90;
+    const DUREE_VALIDITE_QUESTION = 10;
     
     
     public function init() {
@@ -44,18 +44,16 @@ class Api_QuestionController extends Zend_Controller_Action {
         $isEcran = array_search("ecran", $this->_request->getParams());
         
         
-                
         //récupère le quizz en cours
-        $leQuizz = $this->getCurrentQuizzGare($tvs);
+        $leQuizz = $this->getCurrentQuizzGare($tvs); //null si pas de quizz commencé mais pas terminé
        
         //Termine le quizz si celui ci est expiré
         if (!is_null($leQuizz) && !$this->estActif($leQuizz) ) {
             //$this->view->dateDebut = $dateDebut;
             $this->view->message = "quizz expiré";
-            $this->terminerQuizz($leQuizz->idQuizz);
-            //return;
-        
+            $this->terminerQuizz($leQuizz->idQuizz);        
         }
+        
         //Si le quizz est terminé ou plus actif (expiration
         if (is_null($leQuizz) || !$this->estActif($leQuizz) ) {
             //  - récupérer le prochain quizz dans la liste
@@ -78,7 +76,7 @@ class Api_QuestionController extends Zend_Controller_Action {
             
             $leQuizz->dateDebut = Zend_Date::now()->toString('yyyy-MM-dd HH:mm:ss');
             
-
+            $leQuizz->save();
             
             $this->demarrerQuizz($leQuizz->idQuizz);
             
@@ -196,6 +194,7 @@ class Api_QuestionController extends Zend_Controller_Action {
         }
         $leQuizz = $quizzRowset->current();
         return $leQuizz;
+        
     }
 
     /*
